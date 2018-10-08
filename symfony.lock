@@ -128,6 +128,9 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "smalot/pdfparser": {
+        "version": "v0.13.2"
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.1.3"
     },
@@ -385,6 +388,9 @@
     },
     "symfony/yaml": {
         "version": "v4.1.6"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.2.25"
     },
     "twig/twig": {
         "version": "v2.5.0"
