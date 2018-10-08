@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subir Archivos{% endblock %}
+
+{% block body %}
+<div class="modal"  id="fileUpload" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Subir Archivos</h5>
+      </div>
+      <div class="modal-body">
+        {{ form_start(form, {'attr': {'id': 'form'}}) }}
+        {{ form_row(form.bill) }}
+        {{ form_row(form.contract) }}
+        
+      </div>
+      <div class="modal-footer">
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+    $(window).on('load',function(){
+        $('#fileUpload').modal('show');
+    });
+</script>
+{% endblock %}
