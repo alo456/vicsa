@@ -1,0 +1,33 @@
+App\Entity\Direcciones:
+    type: entity
+    table: Direcciones
+    id:
+        id:
+            type: guid
+            id: true
+            generate:
+                strategy: UUID
+    fields: 
+            calle:
+                type: string
+                length: 40
+            numeroExterior:
+                type: integer
+                nullable: true
+            numeroInterior:
+                type: integer
+                nullable: true
+            estado:
+                type:string
+                length: 30
+            ciudad: 
+                type: string
+                length: 30
+            colonia:
+                type: string
+                length: 30
+            municipio:
+                type: string
+                length: 30
+            codigoPostal:
+                type: integer

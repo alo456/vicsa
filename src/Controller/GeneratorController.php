@@ -22,9 +22,7 @@ class GeneratorController extends Controller {
     private $contractName = '';
 
 
-    /**
-     * @Route("/upload", name="upload")
-     */
+   
     
     public function index(Request $request) {
         $message = "";
@@ -105,9 +103,9 @@ class GeneratorController extends Controller {
         $textNc = $pdf->getText();
         $textNc = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$textNc);
 
-        //var_dump($text);
-        //var_dump($textNc);
-
+        var_dump($text);
+        var_dump($textNc);
+        die;
         //-------------Precio Unitario-------------
         preg_match('/(?<=Costo Total: \$ ).* Pago Inicial/', $text, $matches);
         $matches = $matches[0];
@@ -245,7 +243,7 @@ class GeneratorController extends Controller {
 
         //var_dump($matches);
         //print_r($text);
-
+        
 
         //------------------GENERAR EXCEL-------------------------------
         $arrayData = [NULL, NULL, "MX07", NULL, $imei, $numMaterial, $lastDesc, NULL, NULL, NULL, NULL, $linea, "VICSA", NULL, NULL, $psi, $rfc, $name, NULL, $calle, $numInt, $numExt,$colonia, $municipio, $cp, $ciudad, $estado, $email, "M47", $plazo, NULL, $punit, NULL, NULL, NULL, NULL, "PUE", "01", "P01"];
