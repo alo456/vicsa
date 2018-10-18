@@ -1,3 +1,7 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+testing:
+    path: /testing
+    controller: App\Controller\TestingController::index
+    
+admin:
+    path: /admin/login
+    controller: App\Controller\TestingController:test
