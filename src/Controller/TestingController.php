@@ -12,13 +12,6 @@ class TestingController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin/home.html.twig');
-    }
-    /**
-     * @Route("/testing2", name="testing2")
-     */
-    public function test()
-    {
-        return $this->render('admin/login.html.twig');
+        return $this->render('testing/index.html.twig');
     }
 }
