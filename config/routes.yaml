@@ -1,3 +1,7 @@
 upload:
     path: /upload
     controller: App\Controller\GeneratorController::index
+
+testing:
+    path: /testing 
+    controller: App\Controller\TestingController::index
