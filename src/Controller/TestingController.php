@@ -10,7 +10,7 @@ class TestingController extends AbstractController
 {
     public function index()
     {
-        return $this->render('home.html.twig');
+        return $this->render('/inventory/inventory.html.twig');
     }
     
     public function test()
