@@ -15,6 +15,11 @@ class TestingController extends AbstractController
     
     public function test()
     {
+        return $this->render('home.html.twig');
+    }
+
+    public function login()
+    {
         return $this->render('login.html.twig');
     }
     
@@ -26,7 +31,7 @@ class TestingController extends AbstractController
         $address->setState("Oaxaca");
         $address->setCity("Oaxaca de Juárez");
         $address->setColony("Las peñas");
-        $address->setMunicipality("Oaxaca de Juárez");
+        $address->setTownship("Oaxaca de Juárez");
         $address->setPc(68150);
 
         $em->persist($address);

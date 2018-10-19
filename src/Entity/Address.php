@@ -51,6 +51,11 @@ class Address
      */
     private $pc;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $township;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +141,18 @@ class Address
     public function setPc(int $pc): self
     {
         $this->pc = $pc;
+
+        return $this;
+    }
+
+    public function getTownship(): ?string
+    {
+        return $this->township;
+    }
+
+    public function setTownship(string $township): self
+    {
+        $this->township = $township;
 
         return $this;
     }

@@ -3,5 +3,13 @@ upload:
     controller: App\Controller\GeneratorController::index
 
 testing:
-    path: /test
-    controller: App\Controller\TestingController::dbTest
+    path: /testing
+    controller: App\Controller\TestingController::test
+
+testLogin:
+    path: /login
+    controller: App\Controller\TestingController::login
+
+activation:
+    path: /activations
+    controller: App\Controller\ActivationController::index
