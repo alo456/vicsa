@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% embed 'menu.html.twig' %}
+        {% block content %}
+            {% set activations = null %}
+            {% if activations is not null %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre del Documento</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activation in activations %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td><a href="#">{{ activation.name }}</a></td>
+                                <td>{{ activation.date | date("m/d/Y") }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <!--<p> Aún no ha registrado ninguna compra :( <br> Registre una para comenzar</p> -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre del Documento</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><a href="#">Documento 1</a></td>
+                            <td>17/08/2018</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td><a href="#">Documento 2</a></td>
+                            <td>15/07/2018</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            {% endif %}
+            
+        {% endblock %}
+    {% endembed %}
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

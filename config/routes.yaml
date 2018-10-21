@@ -1,3 +1,25 @@
 upload:
     path: /upload
     controller: App\Controller\GeneratorController::index
+    
+inventory:
+    path: /admin/inventory
+    controller: App\Controller\GeneratorController::index
+    
+purchases:
+    path: /admin/purchases
+    controller: App\Controller\TestingController::index
+    
+activations:
+    path: /admin/activations
+    controller: App\Controller\TestingController::index
+    
+credit_notes:
+    path: /admin/credit
+    controller: App\Controller\TestingController::index
+    
+configuration:
+    path: /admin/configuration
+    controller: App\Controller\TestingController::index
+
+

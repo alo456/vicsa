@@ -2,7 +2,10 @@
 // Option A: Include all of Bootstrap
 
 $theme-colors: (
-  "custom-color": #6d8fcc
+  "vicsa-blue": #062956,
+  "vicsa-indigo" : #02b0ef,
+  "vicsa-orange" : #ff6600,
+  "vicsa-black" : #333333
 );
 
 @import "bootstrap/scss/bootstrap";
