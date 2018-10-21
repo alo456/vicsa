@@ -1,10 +1,18 @@
 upload:
     path: /upload
     controller: App\Controller\GeneratorController::index
+  
+login:
+    path: /admin/login
+    controller: App\Controller\TestingController::login
+
+home:
+    path: /admin/home
+    controller: App\Controller\TestingController::home
     
 inventory:
     path: /admin/inventory
-    controller: App\Controller\GeneratorController::index
+    controller: App\Controller\TestingController::index
     
 purchases:
     path: /admin/purchases

@@ -19,6 +19,10 @@ class VFileType extends AbstractType
                     'label' => 'false',
                     'entry_options' => [
                         'label' => false,
+                        'attr' => [
+                            'class' => 'file',
+                            'form' => 'files'
+                        ]
                     ],
                     'allow_add' => true,
                     'allow_delete' => true,
@@ -27,15 +31,16 @@ class VFileType extends AbstractType
                     'by_reference' => true,
                     'delete_empty' => true,
                     'attr' => [
-                        'class' => 'form-control files-collection',
+                        'class' => 'table table-sm files-collection',
                     ],
                 ])
                 
-            ->add('submit', SubmitType::class, array('label' => 'Guardar',
-                    'attr' => array(
-                        'class' => 'btn btn-vicsa-indigo col-auto'
-                    )
-                ));
+            ->add('submit', SubmitType::class, ['label' => 'Guardar',
+                    'attr' => [
+                        'class' => 'btn btn-vicsa-indigo col-auto',
+                        'form' => 'files'
+                    ]
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

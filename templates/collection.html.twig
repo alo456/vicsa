@@ -1,36 +1,56 @@
-{#
-# jquery.collection.html.twig
-#
-# Adds the following html attributes to the root node of your collection fields:
-#
-# - data-prototype-name: placeholder used in the prototype to replace element indexes on the collection
-# - data-allow-add: if set to false, plugin will automatically set allow_add option to false
-# - data-allow-delete: if set to false, plugin will automatically set allow_remove option to false
-# - data-name-prefix: contains the collection's prefix used in descendant field names
-#
-# Those information let you configure the plugin options automatically.
-#
-# If you are already using a form theme, you can use both by using:
-# {%
-#   form_theme myForm
-#       'FuzAppBundle::my-form-theme.html.twig'
-#       'FuzAppBundle::jquery.collection.html.twig'
-#       ...
-# %}
-#}
+{# By default, collection uses the form_widget block to create its markup, but we want a table #}
 
 {% block collection_widget %}
     {% spaceless %}
+
+        {#
+         # This is almost a copy/paste of jquery.collection.html.twig, we can't use it as it also
+         # use form_widget. Note that we also use form_widget(prototype) instead of form_row(prototype)
+         # to avoid generating extra markup.
+         #}
         {% if prototype is defined %}
-            {% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}
+            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
             {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
         {% endif %}
         {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
         {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
         {% set attr = attr|merge({'data-name-prefix': full_name}) %}
-        {{ block('form_widget') }}
+
+        <fieldset class="well">
+            <div class="card">
+                <div class="card-block">
+                    <table {{ block('widget_attributes') }} cellspacing="0" width="100%">
+                        <thead>
+                        <th class="th-sm">Archivo</th>
+                        <th class="th-sm">&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            {% for file in form  %}
+                                {{ form_widget(file) }}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {# Don't forget to add the collection attributes in your markup #}
+        </fieldset>
+
     {% endspaceless %}
-{% endblock collection_widget %}
+{% endblock %}
+
+{% block file_widget %}
+
+    {# widget_attributes will generate class="item" from the DiscountCollectionType.entry_options configuration #}
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form) }}</td>
+        <td class="text-center">
+            <a href="#" class="collection-remove btn btn-outline-danger" title="Borrar Elemento"><i class="fa fa-l fa-trash-alt"></i></a>
+        </td>        
+    </tr>
+
+{% endblock %}
 {% block collection_label %}
+    
 {% endblock %}
 

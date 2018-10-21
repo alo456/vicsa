@@ -13,7 +13,10 @@ class TestingController extends AbstractController
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
-        return $this->render('purchases/index.html.twig',[
+        if($formFiles->isSubmitted() && $formFiles->isValid()){
+            var_dump($formFiles->getData());die;
+        }
+        return $this->render('credit_notes/index.html.twig',[
             'formFiles' => $formFiles->createView()
         ]);
     }
