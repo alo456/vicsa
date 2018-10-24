@@ -13,3 +13,4 @@ testLogin:
 activation:
     path: /activations
     controller: App\Controller\ActivationController::index
+

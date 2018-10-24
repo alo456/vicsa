@@ -27,11 +27,6 @@ class Activation
     private $actDate;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $status;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Note", cascade={"persist", "remove"})
      */
     private $note;
@@ -80,18 +75,6 @@ class Activation
     public function setActDate(\DateTimeInterface $actDate): self
     {
         $this->actDate = $actDate;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }

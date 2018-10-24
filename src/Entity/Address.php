@@ -22,12 +22,12 @@ class Address
     private $street;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $extNumber;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $inNumber;
 
@@ -73,24 +73,24 @@ class Address
         return $this;
     }
 
-    public function getExtNumber(): ?int
+    public function getExtNumber(): ?string
     {
         return $this->extNumber;
     }
 
-    public function setExtNumber(?int $extNumber): self
+    public function setExtNumber(string $extNumber): self
     {
         $this->extNumber = $extNumber;
 
         return $this;
     }
 
-    public function getInNumber(): ?int
+    public function getInNumber(): ?string
     {
         return $this->inNumber;
     }
 
-    public function setInNumber(?int $inNumber): self
+    public function setInNumber(string $inNumber): self
     {
         $this->inNumber = $inNumber;
 

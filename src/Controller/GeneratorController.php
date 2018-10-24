@@ -20,20 +20,17 @@ class GeneratorController extends Controller {
 
     private $billName = '';
     private $contractName = '';
-
-
-   
-    
     public function index(Request $request) {
         $message = "";
         $form = $this->createFormBuilder([])
+                /*
                 ->add('bill', FileType::class, array(
                     'label' => 'Factura',
                     'attr' => array(
                         'class' => 'form-control',
                         'accept' => '.pdf'
                     )
-                ))
+                ))*/
                 ->add('contract', FileType::class, array(
                     'label' => 'Contrato',
                     'attr' => array(
@@ -51,16 +48,17 @@ class GeneratorController extends Controller {
                 ->getForm();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $directory = $this->get('kernel')->getProjectDir() . '/Contracts';
             try{
-                $file = $form['bill']->getData();
+                /*$file = $form['bill']->getData();
                 $file->move(
-                        "Files", $file->getClientOriginalName()
+                        $directory, $file->getClientOriginalName()
                 );
-                $this->billName = $file->getClientOriginalName();
+                $this->billName = $file->getClientOriginalName();*/            
                 $file = $form['contract']->getData();
                 $file->move(
-                        "Files", $file->getClientOriginalName()
-                    );
+                    $directory, $file->getClientOriginalName()
+                );
                 $this->contractName = $file->getClientOriginalName();
                 $message = "OK";
                 $this->generarExcel();
@@ -86,6 +84,7 @@ class GeneratorController extends Controller {
         $result = trim($result);
         return $result; 
     }
+
 
     public function generarExcel()
     {
