@@ -1,16 +1,33 @@
 upload:
     path: /upload
     controller: App\Controller\GeneratorController::index
-
-testing:
-    path: /testing
-    controller: App\Controller\TestingController::test
-
-testLogin:
-    path: /login
+  
+login:
+    path: /admin/login
     controller: App\Controller\TestingController::login
 
-activation:
-    path: /activations
-    controller: App\Controller\ActivationController::index
+home:
+    path: /admin/home
+    controller: App\Controller\TestingController::home
+    
+inventory:
+    path: /admin/inventory
+    controller: App\Controller\TestingController::index
+    
+purchases:
+    path: /admin/purchases
+    controller: App\Controller\TestingController::index
+    
+activations:
+    path: /admin/activations
+    controller: App\Controller\TestingController::index
+    
+credit_notes:
+    path: /admin/credit
+    controller: App\Controller\TestingController::index
+    
+configuration:
+    path: /admin/configuration
+    controller: App\Controller\TestingController::index
+
 
