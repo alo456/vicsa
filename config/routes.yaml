@@ -24,10 +24,12 @@ activations:
     
 credit_notes:
     path: /admin/credit
-    controller: App\Controller\TestingController::index
+    controller: App\Controller\NoteController::index
     
 configuration:
     path: /admin/configuration
     controller: App\Controller\TestingController::index
 
-
+testHome:
+    path: /test
+    controller: App\Controller\TestingController::home

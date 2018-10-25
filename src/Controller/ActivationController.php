@@ -112,11 +112,23 @@ class ActivationController extends Controller
             $activation->setActDate($actDate);
 
             //-------------------device & sim tests----------------------------
-            $device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' => "HolaMundo"));
+            $device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' => "353072080090493"));
             $sim = $em->getRepository('App\Entity\Sim')->findOneBy(array('iccid' => "HolaMundoSim"));
 
             $activation -> setDevice($device);
             $activation -> setSim($sim);
+
+            //--------------------------updating warehouse data--------------------
+            $warehouse = $device -> getWarehouse();
+            $warehouse -> removeDevice($device);
+            $warehouse -> setQuantity($warehouse->getQuantity()-1);
+            $warehouse -> setCost($warehouse->getCost() - $device -> getPrice());
+
+
+            $warehouse = $sim -> getWarehouse();
+            $warehouse -> removeSim($sim);
+            $warehouse -> setQuantity($warehouse->getQuantity()-1);
+            $warehouse -> setCost($warehouse->getCost() - $sim -> getPrice());
 
             $em -> persist($activation);
 

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TestingController extends AbstractController
 {
+    
     public function index(Request $request)
     {
         $form = $this->get('form.factory');
@@ -23,8 +24,8 @@ class TestingController extends AbstractController
     
     public function home()
     {
-        $date = new \DateTime(null, new \DateTimeZone('America/New_York'));
-        var_dump($date);
+        //$date = new \DateTime(null, new \DateTimeZone('America/New_York'));
+        //var_dump($date);
         return $this->render('home.html.twig');
     }
     

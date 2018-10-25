@@ -29,7 +29,7 @@ class Note
     private $noteDate;
 
     /**
-     * @ORM\Column(type="string", length=4)
+     * @ORM\Column(type="string", length=50)
      */
     private $paymentTerm;
 
