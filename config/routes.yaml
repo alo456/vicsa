@@ -30,4 +30,6 @@ configuration:
     path: /admin/configuration
     controller: App\Controller\TestingController::index
 
-
+up:
+    path: /up
+    controller: App\Controller\PurchaseController::upload
