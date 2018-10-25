@@ -14,17 +14,17 @@ class HomeController extends AbstractController
     public function init()
     {
         $qb = $em->createQueryBuilder();
-        $qb->select(array('A')) // string 'u' is converted to array internally
+        $qb->select(array('A')) // string 'A' is converted to array internally
                ->from('Activation', 'A')
-                ->where('A.sim IS NULL')
-                ->andwhere('A.device IS NULL');
+               ->where('A.note IS NULL');
         
         $act = $qb->getParameters();
         
         if (!$act) {
-        throw $this->createNotFoundException(
-            'No pending payments'
-        );
+        return $this->render(
+        'waiting',
+        'No existen pendientes'
+    );
     }
 
     return $this->render(

@@ -14,16 +14,14 @@ class WarehouseController extends AbstractController
     {
         $wh = $this->getDoctrine()->getRepository(Warehouse::class)->findAll();
         
-        foreach($wh as $item){
+        /*foreach($wh as $item){
             $ec= (string)$item->getId()." ".(string)$item->getQuantity()."\n";
             echo $ec;
-        }
+        }*/
      
        
     if (!$wh) {
-        throw $this->createNotFoundException(
-            'No items found'
-        );
+        return new Response("No hay items en el almacen");
     }
 
     return $this->render(
@@ -34,6 +32,21 @@ class WarehouseController extends AbstractController
       
         //$records = $em->getRepository("Entity\Warehouse")->findAll();
         
+    }
+    
+    public function findByName($id){
+         $em = $this->getDoctrine()->getManager();
+         $wh= $this->getDoctrine()->getRepository(Warehouse::class)->find($id);
+    
+
+         if (!$wh) {
+        return new Response("No hay dispositivos almacenados");
+        }
+
+        return $this->render(
+            'waiting',
+            array('items' => $wh)
+        );
     }
     
     public function dbTest2(){
