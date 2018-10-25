@@ -84,19 +84,22 @@ class PurchaseController extends AbstractController
            
            if($lenght==15){
                //es ime -> Device
-               
+               $Bill = $em->getRepository('App\Entity\DeviceBill')->findOneBy(array('docNumber' => $docs_number[$i]));
                //Device Bill
+               if($Bill==null){
+                   
+             
                 $Bill= new DeviceBill();
                 $Bill->setDocNumber($docs_number[$i]);
                 $Bill->setbillDate($dateObj);
                 $Bill->setPaymentTerm($payment_term);
                 $Bill->setQuantity($quantitys[$i]);
                 $Bill->setDiscount($discount);
-                $em->persist($Bill);
-              
                 
                 
-                //Device
+                
+               }
+               
                 $Device= new Device();
                 $Device->setImei($iccid_imei[$i]);
                 $Device->setMatKey(0);
@@ -107,21 +110,29 @@ class PurchaseController extends AbstractController
                 $Device->setWarehouse(null);
                 $Device->setDeviceBill($Bill);
                 $Device->setNote(NULL);
+                $Bill->addDevice($Device);
                 $em->persist($Device);
+                $em->persist($Bill);
                 $em->flush();
+               
+                 
+                
+                //Device
+               
                 
            }
            else if($lenght==19){
                // es iccid ->SIM
-               
+               $Bill = $em->getRepository('App\Entity\SimBill')->findOneBy(array('docNumber' => $docs_number[$i]));
                //SimBill
+               if($Bill==null){
                 $Bill= new SimBill();
                 $Bill.setdocNumber($docs_number[$i]);
                 $Bill.setbillDate($dateObj);
                 $Bill.setPaymentTerm($payment_term);
                 $Bill.setQuantity($quantitys[$i]);
                 $Bill.setDiscount($discount);
-                $em->persist($Bill);
+               }
                
                 
                 //SIM
@@ -135,7 +146,9 @@ class PurchaseController extends AbstractController
                 $Device->setWarehouse(null);
                 $Device->setSimBill($Bill);
                 $Device->setNote(NULL);
+                $Bill->addSim($Device);
                 $em->persist($Device);
+                $em->persist($Bill);
                 $em->flush();
            }
         }
