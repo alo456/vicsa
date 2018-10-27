@@ -8,7 +8,7 @@ login:
 
 home:
     path: /admin/home
-    controller: App\Controller\TestingController::home
+    controller: App\Controller\HomeController::init
     
 inventory:
     path: /admin/inventory
@@ -33,3 +33,7 @@ configuration:
 testHome:
     path: /test
     controller: App\Controller\TestingController::home
+
+up:
+    path: /up
+    controller: App\Controller\PurchaseController::upload
