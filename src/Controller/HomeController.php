@@ -89,6 +89,7 @@ class HomeController extends AbstractController
         }
 
         foreach($devicePurchasesWeek as $purchase){
+            if(!$purchase) continue;
             $day =  $purchase['entryDate'];
             $day =$day->format('Y-m-d');
             $day = date('N', strtotime($day)); //------------número del día 1(lunes), 7(domingo)
@@ -96,6 +97,7 @@ class HomeController extends AbstractController
         }
 
         foreach($simPurchasesWeek as $purchase){
+            if(!$purchase) continue;
             $day =  $purchase[0]['entryDate'];
             $day =$day->format('Y-m-d');
             $day = date('N', strtotime($day)); //------------número del día 1(lunes), 7(domingo)
