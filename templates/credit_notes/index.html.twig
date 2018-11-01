@@ -3,7 +3,7 @@
     {% embed 'menu.html.twig' %}
         {% block nav %}
             <li class="nav-item" wfd-id="30">
-                <a href="" class="btn btn-vicsa-indigo" id="create" data-target="#noteModal" data-toggle="modal">Nueva Nota | <i class="fa fa-plus"></i></a> 
+                <a href="" class="btn btn-vicsa-indigo" id="create" data-target="#noteModal" data-toggle="modal">Agregar Nota | <i class="fa fa-plus"></i></a> 
             </li>
         {% endblock %}
         {% block content %}
@@ -37,7 +37,7 @@
                             {% for note in notes %}
                                 <tr>
                                     <th scope="row">{{ loop.index }}</th>
-                                    <td><a href="#">{{ notes.name }}</a></td>
+                                    <td><a href="{{ notes.name }}">{{ notes.name }}</a></td>
                                     <td>{{ notes.date | date("m/d/Y") }}</td>
                                 </tr>
                             {% endfor %}
@@ -243,7 +243,6 @@
                     <h5 class="modal-title">Agregar Nota de Crédito</h5>
                 </div>
                 <div class="modal-body">
-                    {% form_theme formFiles  'collection.html.twig' %}
                     {{ form_start(formFiles, {'attr': {'id': 'files'}}) }}
                     {{ form_row(formFiles.files) }}
                     
@@ -258,19 +257,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{asset('js/vendors/jquery.collection.js')}}"></script>
-    <script>
-        $('.files-collection').collection({
-            add: '<a href="#" id="add" class="float-right text-vicsa-orange" title="Add element"><i class="fa fa-lg fa-plus"></i></a>',
-            remove: '<a href="#" class="btn btn-outline-danger" title="Delete element"><i class="fa fa-l fa-trash"></i></a>',
-            add_at_the_end: true,
-            init_with_n_elements: 1,
-            allow_up: false,
-            allow_down: false,
-            elements_selector: 'tr.file',
-            elements_parent_selector: '%id% tbody'
-        });        
-    </script>
     <script>
         $(document).ready(function () {
             $('#dtBasicExample')

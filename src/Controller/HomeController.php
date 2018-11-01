@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use \DateTime;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -20,6 +22,9 @@ class HomeController extends AbstractController
         $pends = [];
         $sales = [];
         $purchases = [];
+        $total=0;
+        $days=[];
+        
         for($i=0;$i<8;$i++){
             $sales[$i] = 0;
             $purchases[$i] = 0;
@@ -76,7 +81,19 @@ class HomeController extends AbstractController
                     $pend->getContract()->getPlanName(),
                     $pend->getActDate()->format('Y-m-d H:i:s')
                 );
+                 foreach($pend->getSim() as $sim){
+                    $total+=$sim->getPrice();
+                }
+                foreach($pend->getDevice() as $device){
+                    $total+=$device->getPrice();
+                }
                 
+                $dateA=$pend->getActDate()->format('Y-m-d H:i:s'); //fecha en activacion
+                
+                $dateB= new DateTime(date('Y-m-d H:i:s', time()));//fecha actual
+               $rDate= $dateA->diff($dateB);
+              
+               $days[]=$rDate->days;
                 
             }
         }
@@ -89,6 +106,7 @@ class HomeController extends AbstractController
         }
 
         foreach($devicePurchasesWeek as $purchase){
+            if(!$purchase) continue;
             $day =  $purchase['entryDate'];
             $day =$day->format('Y-m-d');
             $day = date('N', strtotime($day)); //------------número del día 1(lunes), 7(domingo)
@@ -96,6 +114,7 @@ class HomeController extends AbstractController
         }
 
         foreach($simPurchasesWeek as $purchase){
+            if(!$purchase) continue;
             $day =  $purchase[0]['entryDate'];
             $day =$day->format('Y-m-d');
             $day = date('N', strtotime($day)); //------------número del día 1(lunes), 7(domingo)
@@ -104,20 +123,25 @@ class HomeController extends AbstractController
 
         //var_dump($purchases);
 
-
+        if($total==0)echo "Nada";
         return $this->render('home/home.html.twig',[
             //'form' => $form->createView(),
             'message' => $message,
             'pends' => $pends,
             'sales' => $sales,
-            'purchases' => $purchases
+            'purchases' => $purchases,
+            'total'=> $total,
+            'dias' => $days
         ]);
 
         
     }
 
     public function test(){
-        
+         $dStart = new DateTime('2018-10-26');
+        $dEnd  = new DateTime(date('Y-m-d', time()));
+   $dDiff = $dStart->diff($dEnd);
+   return new Response ($dDiff->days);
     }
     
    
