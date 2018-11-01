@@ -43,7 +43,7 @@ class NoteController extends Controller
             }           
             $this->extractNote($noteNames);
         }
-        return $this->render('credit_notes/index.html.twig',[
+        return $this->render('note/index.html.twig',[
             'formFiles' => $formFiles->createView()
         ]);
     }

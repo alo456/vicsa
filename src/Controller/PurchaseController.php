@@ -15,7 +15,7 @@ use App\Entity\SimBill;
 class PurchaseController extends AbstractController
 {
     
-     public function upload()
+     public function index()
     {
         $em = $this->getDoctrine()->getManager();
         $inputFileName = 'C:\wamp64\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
@@ -155,7 +155,7 @@ class PurchaseController extends AbstractController
         
 
       
-    return new Response('');
+        return $this->render('purchase/index.html.twig');
     }
     
     

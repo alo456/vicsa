@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 class HomeController extends AbstractController
 {
 
-    public function init()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
@@ -124,7 +124,7 @@ class HomeController extends AbstractController
         //var_dump($purchases);
 
         if($total==0)echo "Nada";
-        return $this->render('home/home.html.twig',[
+        return $this->render('home/index.html.twig',[
             //'form' => $form->createView(),
             'message' => $message,
             'pends' => $pends,

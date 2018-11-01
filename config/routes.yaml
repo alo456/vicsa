@@ -8,21 +8,21 @@ login:
 
 home:
     path: /admin/home
-    controller: App\Controller\HomeController::init
+    controller: App\Controller\HomeController::index
     
-inventory:
-    path: /admin/inventory
-    controller: App\Controller\TestingController::index
+warehouse:
+    path: /admin/warehouse
+    controller: App\Controller\WarehouseController::index
     
 purchases:
     path: /admin/purchases
-    controller: App\Controller\TestingController::index
+    controller: App\Controller\PurchaseController::index
     
 activations:
     path: /admin/activations
-    controller: App\Controller\TestingController::index
+    controller: App\Controller\ActivationController::index
     
-credit_notes:
+notes:
     path: /admin/credit
     controller: App\Controller\NoteController::index
     

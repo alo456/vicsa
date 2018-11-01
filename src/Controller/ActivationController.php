@@ -61,7 +61,7 @@ class ActivationController extends Controller
             
             
         }
-        return $this->render('generator/index.html.twig', [
+        return $this->render('activation/index.html.twig', [
                     'form' => $form->createView(),
                     'message' => $message
         ]);

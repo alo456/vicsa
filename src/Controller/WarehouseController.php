@@ -13,7 +13,7 @@ use App\Entity\DeviceBill;
 class WarehouseController extends AbstractController
 {
     
-    public function getAll()
+    public function index()
             
     {
         $id=1;
@@ -106,7 +106,7 @@ class WarehouseController extends AbstractController
     
 
     return $this->render(
-        'waiting',
+        'warehouse/index.html',
         [
           'cantidad' => $cantidad,
             'descripcion' => $descripcion,
@@ -117,7 +117,7 @@ class WarehouseController extends AbstractController
        
       
         //$records = $em->getRepository("Entity\Warehouse")->findAll();
-        return new Response('Done');
+        //return new Response('Done');
     }
     
   
