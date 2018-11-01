@@ -46,7 +46,7 @@ class ActivationController extends Controller
             $message = $this->extractActivation($activationNames);           
             //var_dump($activationNames);
         }
-        return $this->render('activations/index.html.twig', [
+        return $this->render('activation/index.html.twig', [
                     'formFiles' => $formFiles->createView(),
                     'message' => $message
         ]);

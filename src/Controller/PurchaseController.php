@@ -19,7 +19,7 @@ class PurchaseController extends AbstractController
     public function index()
     {
         $em = $this->getDoctrine()->getManager();
-        $inputFileName = 'C:\wamp\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
+        $inputFileName = 'C:\wamp64\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
        
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName); //recupera el excel
         $worksheet = $spreadsheet->getActiveSheet(); //obtiene la hoja del excel
