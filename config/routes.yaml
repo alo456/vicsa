@@ -20,7 +20,7 @@ purchases:
     
 activations:
     path: /admin/activations
-    controller: App\Controller\TestingController::index
+    controller: App\Controller\ActivationController::index
     
 credit_notes:
     path: /admin/credit

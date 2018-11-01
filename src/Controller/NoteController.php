@@ -28,7 +28,7 @@ class NoteController extends Controller
 {
     public function index(Request $request)
     {
-        $noteNames = [];
+        $noteNames = $message = [];
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
@@ -41,7 +41,7 @@ class NoteController extends Controller
                 );
                 $noteNames[] = $file->getClientOriginalName();
             }           
-            $this->extractNote($noteNames);
+            $message = $this->extractNote($noteNames);
         }
         return $this->render('credit_notes/index.html.twig',[
             'formFiles' => $formFiles->createView()
@@ -61,7 +61,8 @@ class NoteController extends Controller
             $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
             $message[] = $this->generateNote($text);
         }
-        var_dump($message);
+        //var_dump($message);
+        return $message;
     }
 
     public function generateNote($text){
