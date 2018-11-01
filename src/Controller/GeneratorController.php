@@ -341,6 +341,142 @@ class GeneratorController extends Controller {
          return new Response("Excel generated succesfully");
     }
 
+    public function generateExcel($contracts){
+        //-------------------------------looking for excel info into each device's IMEI---------------
+        foreach($contracts as $contractNumber){
+            $contract = $em->getRepository('App\Entity\Contract')->findOneBy(array('accountNumber' => $contractNumber));
+            $client = $contract->getClient();
+            $address = $client->getAddress();
+            $activation = $contract->getActivation();
+            $device = $activation->getDevice();
+            $sim = $activation -> getSim();
+            
+            $punit = $contract->getTotalPrice();
+            $deadlines = $contract->getDeadlines();
+            
+            $email = $client->getEmail();
+
+            $state = $address->getState();
+            $city = $address->getCity();
+            $pc = $address->getPc();
+            $township = $address->getTownship();
+            $colony = $address->getColony();
+            $extNum = $address->getExtNumber();
+            $inNum = $address->getInNumber();
+            $street = $address->getStreet();
+            
+            $name = $client->getSurname().' '.$client->getName();
+            $rfc = $client->getRfc();
+
+            $line = $activation->getLineNumber();
+
+            $imei = $device->getImei();
+            $iccid = $sim->getIccid();
+
+            $psi = $device->getPrice();
+            $description = $device->getDescription();
+            $matNum = $device->getMatKey();
+
+
+            //------------------GENERATE EXCEL-------------------------------
+        $arrayData = [NULL, NULL, "MX07", NULL, $imei, $matNum, $description, NULL, NULL, NULL, NULL, $line, "VICSA", NULL, NULL, $psi, $rfc, $name, NULL, $street, $inNum, $extNum,$colony, $township, $pc, $city, $state, $email, "M47", $deadlines, NULL, $punit, NULL, NULL, NULL, NULL, "PUE", "01", "P01"];
+        
+        $spreadsheet = new Spreadsheet();
+        
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet()
+        ->fromArray(
+            $arrayData,
+            NULL, 
+            'A2'
+        );
+        $sheet->setTitle("REVISION");
+
+        $sheet->setCellValue('A1', 'No.');
+        $sheet->setCellValue('B1', 'No.');
+        $sheet->setCellValue('C1', 'Region');
+        $sheet->setCellValue('D1', "Fecha del Proceso");
+        $sheet->setCellValue('E1', "Numero de Serie (IMEI)");
+        $sheet->setCellValue('F1', "Numero de Material");
+        $sheet->setCellValue('G1', "Descripcion de Material");
+        $sheet->setCellValue('H1', "Tipo de Error");
+        $sheet->setCellValue('I1', "Observaciones");
+        $sheet->setCellValue('J1', "Archivo Origen");
+        $sheet->setCellValue('K1', "Posicion en el Doc.");
+        $sheet->setCellValue('L1', "Linea");
+        $sheet->setCellValue('M1', "Fuerza de Venta");
+        $sheet->setCellValue('N1', "Fecha de Activacion");
+        $sheet->setCellValue('O1', "Fecha de Envio");
+        $sheet->setCellValue('P1', "Precio (Sin IVA)");
+        $sheet->setCellValue('Q1', "RFC");
+        $sheet->setCellValue('R1', "Nombre 1");
+        $sheet->setCellValue('S1', "Nombre 2");
+        $sheet->setCellValue('T1', "Calle");
+        $sheet->setCellValue('U1', "Número Interior");
+        $sheet->setCellValue('V1', "Número Exterior");
+        $sheet->setCellValue('W1', "Colonia");
+        $sheet->setCellValue('X1', "Delegacion/Municipio");
+        $sheet->setCellValue('Y1', "C.P.");
+        $sheet->setCellValue('Z1', "Ciudad");
+        $sheet->setCellValue('AA1', "Estado");
+        $sheet->setCellValue('AB1', "e-Mail");
+        $sheet->setCellValue('AC1', "Motivo de pedido");
+        $sheet->setCellValue('AD1', "Meses de plazo");
+        $sheet->setCellValue('AE1', "Clave de condiciones de pago");
+        $sheet->setCellValue('AF1', "Precio Unitario");
+        $sheet->setCellValue('AG1', "Bloqueo DT03");
+        $sheet->setCellValue('AH1', "TIPO RFC");
+        $sheet->setCellValue('AI1', "ENGANCHE");
+        $sheet->setCellValue('AJ1', "CARGO FINAN");
+        $sheet->setCellValue('AK1', "CveMetPago");
+        $sheet->setCellValue('AL1', "FormaPago");
+        $sheet->setCellValue('AM1', "CveUsoCFDI");
+        $sheet->setCellValue('AN1', "CTA SAP");
+        $sheet->setCellValue('AO1', "MATERIAL");
+        $sheet->setCellValue('AP1', "FACTURA ORIGEN");
+        $sheet->setCellValue('AQ1', "MONTO");
+        $sheet->setCellValue('AR1', "COMENTARIO");
+        $sheet->setCellValue('AS1', "COMENTARIO1");
+        $sheet->setCellValue('AT1', "NOTA CREDITO");
+        $sheet->setCellValue('AU1', "IMPORTE S/ IVA");
+        $sheet->setCellValue('AV1', "CTA SAP");
+        $sheet->setCellValue('AW1', "FACTURA FINAL");
+        $sheet->setCellValue('AX1', "IMPORTE C/ IVA");
+        $sheet->setCellValue('AY1', "POLIZA");
+        $sheet->setCellValue('AZ1', "");
+        $sheet->setCellValue('BA1', "");
+        $sheet->setCellValue('BB1', "");
+        $sheet->setCellValue('BC1', "");
+        $sheet->setCellValue('BD1', "");
+        $sheet->setCellValue('BE1', "");
+        $sheet->setCellValue('BF1', "");
+        $sheet->setCellValue('BG1', "");
+        $sheet->setCellValue('BH1', "");
+        $sheet->setCellValue('BI1', "");
+        $sheet->setCellValue('BJ1', "");
+        $sheet->setCellValue('BK1', "");
+        $sheet->setCellValue('BL1', "");
+        $sheet->setCellValue('BM1', "DIFERENCIAS");
+
+        
+
+         // Create your Office 2007 Excel (XLSX Format)
+         $writer = new Xlsx($spreadsheet);
+        
+         // Create a Temporary file in the system
+         $fileName = 'ACLARACIONES.xlsx';
+         $publicDirectory = $this->get('kernel')->getProjectDir() . '/public';
+         $excelFilepath =  $publicDirectory . '/aclaraciones.xlsx';
+         
+         // Create the excel file in the tmp directory of the system
+         $writer->save($excelFilepath);
+         
+         // Return the excel file as an attachment
+         return new Response("Excel generated succesfully");
+
+        }
+
+    }
 
 
 }

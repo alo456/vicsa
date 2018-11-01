@@ -48,6 +48,11 @@ class Contract
      */
     private $activation;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $totalPrice;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Contract
     public function setActivation(Activation $activation): self
     {
         $this->activation = $activation;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(float $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
