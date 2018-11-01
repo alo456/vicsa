@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Controller;
-    
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+
 use App\Entity\Device;
-use App\Entity\Sim;
 use App\Entity\DeviceBill;
+use App\Entity\Sim;
 use App\Entity\SimBill;
+use App\Form\VFileType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 
@@ -15,10 +15,11 @@ use App\Entity\SimBill;
 class PurchaseController extends AbstractController
 {
     
-     public function index()
+    private $contractName = '';
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
-        $inputFileName = 'C:\wamp64\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
+        $inputFileName = 'C:\wamp\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
        
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName); //recupera el excel
         $worksheet = $spreadsheet->getActiveSheet(); //obtiene la hoja del excel
@@ -78,10 +79,7 @@ class PurchaseController extends AbstractController
             {
                 throw new \UnexpectedValueException("Could not parse the date: $bills_date[$i]");
             }
-          
-          
-           
-           
+            
            if($lenght==15){
                //es ime -> Device
                $Bill = $em->getRepository('App\Entity\DeviceBill')->findOneBy(array('docNumber' => $docs_number[$i]));
@@ -153,9 +151,13 @@ class PurchaseController extends AbstractController
            }
         }
         
-
+        //file form
+        $form = $this->get('form.factory');
+        $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
       
-        return $this->render('purchase/index.html.twig');
+        return $this->render('purchase/index.html.twig',[ 
+                'formFiles' => $formFiles->createView()
+                ]);
     }
     
     

@@ -18,7 +18,7 @@ class VFileType extends AbstractType
                     'label' => false,
                     'multiple' => true,
                     'attr' => [
-                        'class' => 'table table-sm files-collection',
+                        'class' => 'form-control',
                     ]
                 ])
             ->add('submit', SubmitType::class, ['label' => 'Guardar',
