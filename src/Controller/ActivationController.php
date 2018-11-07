@@ -31,11 +31,11 @@ class ActivationController extends Controller
     {
         $message = '';
         $activationNames = [];
+        $directory = $this->get('kernel')->getProjectDir() . '/Contracts';
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
         if($formFiles->isSubmitted() && $formFiles->isValid()){
-            $directory = $this->get('kernel')->getProjectDir() . '/Contracts';
             $activation = $formFiles->getData(); 
             foreach ($activation['files'] as $file) {
                 $file->move(
@@ -46,9 +46,28 @@ class ActivationController extends Controller
             $message = $this->extractActivation($activationNames);           
             //var_dump($activationNames);
         }
+        $files = scandir($directory);
+        for($i=2;$i<sizeof($files);$i++){
+            //--------------------------------Extracting specific data for existing files-------------------
+            $file = $directory.'/'. $files[$i];
+            $PDFParser = new Parser();
+            $pdf = $PDFParser->parseFile($file);
+            $pages = $pdf->getPages();
+            $text = $pages[0]->getText();
+            $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
+            //var_dump($text);
+            //-----------------------line number ------------------------------
+            preg_match('/(?<=Línea: ).{10}/', $text, $matches);
+            $lineNumber = $matches[0];
+            //var_dump($lineNumber);
+            $savedFiles[$files[$i]] = $lineNumber;
+        }
+        //var_dump($savedFiles);
+        
         return $this->render('activation/index.html.twig', [
                     'formFiles' => $formFiles->createView(),
-                    'message' => $message
+                    'message' => $message,
+                    'savedFiles' => $savedFiles
         ]);
     }
 
@@ -64,8 +83,8 @@ class ActivationController extends Controller
             $text = $pdf->getText();
             $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
             $client = $this->generateClient($text);
-        //var_dump($text);
-        
+            //var_dump($text);
+
     //---------------------------Generating Activation Info----------------------
         
             //-----------------------line number ------------------------------

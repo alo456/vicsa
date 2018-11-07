@@ -56,7 +56,7 @@ class HomeController extends AbstractController
         ->getQuery()
         ->getResult();
 
-            $qb = $em->createQueryBuilder();
+        $qb = $em->createQueryBuilder();
 
         $simPurchasesWeek[] = $qb
         ->select ('s.price, s.entryDate')
@@ -135,6 +135,12 @@ class HomeController extends AbstractController
         ]);
 
         
+    }
+
+    public function login()
+    {
+        
+        return $this->render('login.html.twig');
     }
 
     public function test(){

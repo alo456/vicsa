@@ -32,7 +32,7 @@ configuration:
 
 testHome:
     path: /test
-    controller: App\Controller\TestingController::home
+    controller: App\Controller\TestingController::generateUser
 
 up:
     path: /up

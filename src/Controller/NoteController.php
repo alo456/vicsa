@@ -28,12 +28,13 @@ class NoteController extends Controller
 {
     public function index(Request $request)
     {
+        ini_set('xdebug.var_display_max_data', '110000');
         $noteNames = $message = [];
+        $directory = $this->get('kernel')->getProjectDir() . '/Notes';
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
         if($formFiles->isSubmitted() && $formFiles->isValid()){
-            $directory = $this->get('kernel')->getProjectDir() . '/Notes';
             $note = $formFiles->getData(); 
             foreach ($note['files'] as $file) {
                 $file->move(
@@ -43,8 +44,34 @@ class NoteController extends Controller
             }           
             $message = $this->extractNote($noteNames);
         }
+
+        $files = scandir($directory);
+        for($i=2;$i<sizeof($files);$i++){
+            //--------------------------------Extracting specific data for existing files-------------------
+            $file = $directory.'/'. $files[$i];
+            $PDFParser = new Parser();
+            $pdf = $PDFParser->parseFile($file);
+            $text = $pdf->getText();
+            $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
+            //var_dump($text);
+            //-------------------------quantity-------------------------------
+            preg_match('/(?<=Total de Pzas Factura: ).* SELLO DIGITAL DEL EMISOR:/', $text, $matches);
+            $matches = $matches[0];
+            $quantity = $this->extraer($matches,'SELLO');
+
+            //-------------------------total-------------------------------
+            preg_match('/(?<=M.N. \) ).* ELABORADO POR:/', $text, $matches);
+            $matches = $matches[0];
+            $total = $this->extraer($matches,'ELABORADO');
+
+            $savedFiles[$files[$i]] = array($quantity,$total);
+        }
+
+        //var_dump($savedFiles);
+
         return $this->render('note/index.html.twig',[
-            'formFiles' => $formFiles->createView()
+            'formFiles' => $formFiles->createView(),
+            'savedFiles' => $savedFiles
         ]);
     }
 
