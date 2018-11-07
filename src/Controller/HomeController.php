@@ -123,7 +123,7 @@ class HomeController extends AbstractController
 
         //var_dump($purchases);
 
-        if($total==0)echo "Nada";
+        //if($total==0)echo "Nada";
         return $this->render('home/index.html.twig',[
             //'form' => $form->createView(),
             'message' => $message,

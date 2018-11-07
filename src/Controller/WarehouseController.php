@@ -16,102 +16,107 @@ class WarehouseController extends AbstractController
     public function index()
             
     {
+        $message = "";
         $id=1;
         $cantidad=[];
         $descripcion=[];
         $importe=[];
        $valorTotal=[];
-                
+        $valorTotalWH = 0;        
         
-        $wh = $this->getDoctrine()->getRepository(Warehouse::class)->findOneBy(array('id' => $id));
-        if (!$wh) {
-        return new Response("No hay items en el almacen");
+        $wh = $this->getDoctrine()->getRepository(Warehouse::class)->findAll();
+        if($wh){
+            $costoNeto = $wh->getCost();
+            $devices = $wh->getDevices();
+            $sims = $wh->getDevices();
+
+            $d_desc = [];
+            $d_imp = [];
+            $c = 0;
+            $i_q = 1;
+            //sacamos cada device del warehouse
+            foreach ($devices as $dev) {
+                $d_desc[] = $dev->getDescription();
+                $d_imp[] = $dev->getPrice();
+                $c++;
+            }
+            //echo $c;
+            //sumamos los iguales de devices
+            for ($i = 0; $i < $c; $i++) {
+
+
+                for ($j = $i + 1; $j < $c; $j++) {
+                    //echo "comaprando".$d_desc[$i]." con ". $d_desc[$j]."                            ";
+                    if ($d_desc[$i] == "v") {
+                        break;
+                    }
+                    if ($d_desc[$i] == $d_desc[$j]) {
+
+                        $d_desc[$j] = "v";
+                        $i_q++;
+                    }
+                }
+                if ($d_desc[$i] != "v") {
+                    $descripcion[] = $d_desc[$i];
+                    $valorTotal[] = $d_imp[$i] * $i_q;
+                    $importe[] = $d_imp[$i];
+                    $cantidad[] = $i_q;
+                }
+                //echo "suma de un device".$i_q;
+                $i_q = 1;
+            }
+            $ini = $c;
+
+
+            //ahora sim
+            foreach ($sims as $sm) {
+                $d_desc[] = $sm->getDescription();
+                $d_imp[] = $sm->getPrice();
+                $c++;
+            }
+
+            //sumamos los iguales de sim
+            for ($i = $ini; $i < $c; $i++) {
+
+
+                for ($j = $i + 1; $j < $c; $j++) {
+                    if ($d_desc[$i] == "v") {
+                        break;
+                    }
+                    if ($d_desc[$i] == $d_desc[$j]) {
+                        $d_desc[$j] = "v";
+                        $i_q++;
+                    }
+                }
+                if ($d_desc[$i] != "v") {
+                    $descripcion[] = $d_desc[$i];
+                    $valorTotal[] = $d_imp[$i] * $i_q;
+                    $valorTotalWH += $d_imp[$i] * $i_q;
+                    $importe[] = $d_imp[$i];
+                    $cantidad[] = $i_q;
+                }
+                $i_q = 0;
+            }
+
+
+
+            //echo $descripcion[0]." ". $valorTotal[0]." ". $importe[0]." ".$cantidad[0]."\n";
+            //echo $descripcion[1]." ". $valorTotal[1]." ". $importe[1]." ".$cantidad[1]."\n";
         }
         //echo $wh->getId();
         
+        //var_dump($cantidad,$descripcion);die;
         
-        $costoNeto=$wh->getCost();
-        $devices= $wh->getDevices();
-        $sims= $wh->getDevices();
-        
-        $d_desc=[];
-        $d_imp=[];
-        $c=0;
-        $i_q=1;
-        //sacamos cada device del warehouse
-         foreach($devices as $dev){
-              $d_desc[]=$dev->getDescription();
-              $d_imp[]=$dev->getPrice();
-             $c++;
-         }
-         //echo $c;
-       
-         //sumamos los iguales de devices
-          for($i=0;$i<$c;$i++){
-
-               
-              for($j=$i+1;$j<$c;$j++){
-                  //echo "comaprando".$d_desc[$i]." con ". $d_desc[$j]."                            ";
-                  if($d_desc[$i]=="v"){break;}
-                  if($d_desc[$i]==$d_desc[$j]){
-                      
-                      $d_desc[$j]="v";
-                      $i_q++;
-                  }
-              }
-              if($d_desc[$i]!="v"){
-               $descripcion[]=$d_desc[$i];
-               $valorTotal[]=$d_imp[$i]*$i_q;
-               $importe[]=$d_imp[$i];
-                $cantidad[]=$i_q;
-              }
-              //echo "suma de un device".$i_q;
-              $i_q=1;
-          }
-         $ini=$c;
-        
-          
-          //ahora sim
-           foreach($sims as $sm){
-              $d_desc[]=$sm->getDescription();
-              $d_imp[]=$sm->getPrice();
-             $c++;
-         }
-         
-         //sumamos los iguales de sim
-          for($i=$ini;$i<$c;$i++){
-
-               
-              for($j=$i+1;$j<$c;$j++){
-                  if($d_desc[$i]=="v"){break;}
-                  if($d_desc[$i]==$d_desc[$j]){
-                      $d_desc[$j]="v";
-                      $i_q++;
-                  }
-              }
-              if($d_desc[$i]!="v"){
-               $descripcion[]=$d_desc[$i];
-               $valorTotal[]=$d_imp[$i]*$i_q;
-               $importe[]=$d_imp[$i];
-                $cantidad[]=$i_q;
-              
-              }
-              $i_q=0;
-          }
-        
-       
-     
-       //echo $descripcion[0]." ". $valorTotal[0]." ". $importe[0]." ".$cantidad[0]."\n";
-       //echo $descripcion[1]." ". $valorTotal[1]." ". $importe[1]." ".$cantidad[1]."\n";
-    
 
     return $this->render(
-        'warehouse/index.html',
+        'warehouse/index.html.twig',
         [
-          'cantidad' => $cantidad,
-            'descripcion' => $descripcion,
-            'importe'=> $importe,
-            'valorTotal' =>$valorTotal
+            'quantity' => $cantidad,
+            'description' => $descripcion,
+            'value'=> $importe,
+            'total' =>$valorTotal,
+            'message' => $message,
+            'totalwh' => $valorTotalWH
     
         ]);
        
