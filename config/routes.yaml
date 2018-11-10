@@ -26,8 +26,8 @@ notes:
     path: /admin/credit
     controller: App\Controller\NoteController::index
     
-configuration:
-    path: /admin/configuration
+settings:
+    path: /admin/settings
     controller: App\Controller\TestingController::index
 
 testHome:

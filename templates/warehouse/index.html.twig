@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
+{% block title %} Inventario {% endblock %}
+{% block stylesheets %}
+    <style>
+        .dataTables_filter input { width: 450px }
+    </style>
+{% endblock %}
 {% block body %}
     {% embed 'menu.html.twig' %}
+        {% block title %} Inventario {% endblock %}
         {% block nav %}
             <li class="nav-item text-left">
                 <a class="nav-link" href="">Valor de Inventario : ${{ totalwh }}</a>
@@ -41,11 +48,22 @@
                 $('#dtBasicExample')
                         .addClass('nowrap')
                         .dataTable({
+                            dom: '<"top"l><i<f>>rt<"bottom"lip><"clear">',
+                            pagingType: "full_numbers",
+                            language: {
+                                paginate: {
+                                    previous: "<i class='fas fa-backward'> </i>",
+                                    next: "<i class='fas fa-forward'> </i>",
+                                    first: "<i class='fas fa-step-backward'> </i>",
+                                    last: "<i class='fas fa-step-forward'> </i>",
+                                }
+                            },
                             responsive: true,
                             columnDefs: [
                                 {targets: [-1, -3], className: 'dt-body-right'}
-                            ]
-                        });
+                            ],
+                        }
+                        );
             });
         </script>
     {% endblock %}
