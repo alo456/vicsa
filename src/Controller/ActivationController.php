@@ -47,6 +47,7 @@ class ActivationController extends Controller
             //var_dump($activationNames);
         }
         $files = scandir($directory);
+        $savedFiles = [];
         for($i=2;$i<sizeof($files);$i++){
             //--------------------------------Extracting specific data for existing files-------------------
             $file = $directory.'/'. $files[$i];
