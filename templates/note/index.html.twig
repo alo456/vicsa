@@ -1,9 +1,16 @@
 {% extends 'base.html.twig' %}
+{% block title %} Notas de Crédito {% endblock %}
+{% block stylesheets %}
+    <style>
+        .dataTables_filter input { width: 450px }
+    </style>
+{% endblock %}
 {% block body %}
     {% embed 'menu.html.twig' %}
+        {% block title %} Notas de Crédito {% endblock %}
         {% block nav %}
             <li class="nav-item" wfd-id="30">
-                <a href="" class="btn btn-vicsa-indigo" id="create" data-target="#noteModal" data-toggle="modal">Agregar Nota | <i class="fa fa-plus"></i></a> 
+                <a href="" class="btn btn-vicsa-indigo" id="create" data-target="#noteModal" data-toggle="modal">Cargar Notas | <i class="fa fa-plus"></i></a> 
             </li>
         {% endblock %}
         {% block content %}
@@ -24,7 +31,7 @@
                 <tbody>
                     {% for file, value in savedFiles %}
                         <tr>
-                            <td><a href="{{ file }}">{{ file }}</a></td>
+                            <td><a href="{{ notesDir ~ "/" ~ file }}">{{ file }}</a></td>
                             <td>{{ value[0] }}</td>
                             <td>{{ value[1] }}</td>
                         </tr>
@@ -59,6 +66,16 @@
             $('#dtBasicExample')
                     .addClass('nowrap')
                     .dataTable({
+                        dom: '<"top"l><i<f>>rt<"bottom"lip><"clear">',
+                            pagingType: "full_numbers",
+                            language: {
+                                paginate: {
+                                    previous: "<i class='fas fa-backward'> </i>",
+                                    next: "<i class='fas fa-forward'> </i>",
+                                    first: "<i class='fas fa-step-backward'> </i>",
+                                    last: "<i class='fas fa-step-forward'> </i>",
+                                }
+                            },
                         responsive: true,
                         columnDefs: [
                             {targets: [-1], className: 'dt-body-right'}
