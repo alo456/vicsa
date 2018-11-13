@@ -27,12 +27,15 @@ class PurchaseController extends Controller
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
-        $directory = $this->get('kernel')->getProjectDir() . '/Excel';
+        $directory = $this->get('kernel')->getProjectDir() . '\Excel';
         if($formFiles->isSubmitted() && $formFiles->isValid()){
-            $file = $formFiles->getData()[0];
+            //var_dump($formFiles->getData()['files'][0]);
+            $file = $formFiles->getData()['files'][0];
             $file->move(
                 $directory, $file->getClientOriginalName()
             );
+            $this->extractExcel($file->getClientOriginalName());
+
         }
         return $this->render('purchase/index.html.twig',[ 
                 'formFiles' => $formFiles->createView(),
@@ -40,10 +43,12 @@ class PurchaseController extends Controller
                 ]);
     }
     
-    private function extractExcel(){
+    private function extractExcel($fileName){
         $em = $this->getDoctrine()->getManager();
-        $inputFileName = 'C:\wamp64\www\vicsa\Excel\ejemplo1.xlsx';  //ruta del archivo
-
+        $inputFileName = $this->get('kernel')->getProjectDir() . '\Excel\\'.$fileName;  //ruta del archivo
+        
+        //var_dump($inputFileName);
+        
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName); //recupera el excel
         $worksheet = $spreadsheet->getActiveSheet(); //obtiene la hoja del excel
 
