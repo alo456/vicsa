@@ -12,7 +12,7 @@
         #report h3 { text-align: center; margin: 0; }
         #report2 { width: 474px; height: 261px; padding: 5px; float : left; display:block; }
         #report2 h3 { text-align: center; margin: 0; }
-        #pending { width: 471px; height: 522px; padding: 5px;  float : left; display:block; }
+        #pending { width: 517px; height: 466px; padding: 5px;  float : left; display:block; }
         #pending h3 { text-align: center; margin: 0; }
     </style>
 {% endblock %}
@@ -168,6 +168,7 @@
                     data: lineChartData,
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         hoverMode: 'index',
                         stacked: false,
                         scales: {
@@ -201,6 +202,7 @@
                     data: lineChartData,
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         hoverMode: 'index',
                         stacked: false,
                         scales: {
@@ -267,7 +269,6 @@
         });
         $(function () {
             $("#report").resizable({
-                animate: true,
                 minHeight: 261,
                 minWidth: 474,
                 maxWidth: 1011
@@ -275,7 +276,6 @@
         });
         $(function () {
             $("#report2").resizable({
-                animate: true,
                 minHeight: 261,
                 minWidth: 474,
                 maxWidth: 1011
@@ -283,9 +283,8 @@
         });
         $(function () {
             $("#pending").resizable({
-                animate: true,
-                minHeight: 278,
-                minWidth: 471,
+                minHeight: 517,
+                minWidth: 466,
                 maxWidth: 1011
             });
         });

@@ -58,11 +58,17 @@ span {
 .wrapper {
     display: flex;
     align-items: stretch;
+    width: 100%;
 }
 
 #sidebar {
     min-width: 250px;
     max-width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
     background: #062956;
     color: #fff;
     transition: all 0.3s;
@@ -195,12 +201,19 @@ a.article:hover {
 ----------------------------------------------------- */
 
 #content {
-    width: 100%;
+    width: calc(100% - 250px);
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
+
+#content.active {
+    width: calc(100% - 100px);
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
