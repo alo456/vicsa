@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 {% block title %} Dashboard {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="{{asset('css/vendors/jquery-ui.css')}}" rel="stylesheet">
     <style>
         td{
             background-color:#dc3545;
         }
     </style>
     <style>
-        #report { width: 474px; height: 261px; padding: 5px; float : left; display:block; }
+        #report { width: 474px; height: 236px; padding: 5px; float : left; display:block; }
         #report h3 { text-align: center; margin: 0; }
-        #report2 { width: 474px; height: 261px; padding: 5px; float : left; display:block; }
+        #report2 { width: 474px; height: 236px; padding: 5px; float : left; display:block; }
         #report2 h3 { text-align: center; margin: 0; }
-        #pending { width: 517px; height: 466px; padding: 5px;  float : left; display:block; }
+        #pending { width: 466px; height: 472px; padding: 5px;  float : left; display:block; }
         #pending h3 { text-align: center; margin: 0; }
     </style>
 {% endblock %}
@@ -29,24 +29,12 @@
                 <table id="dtBasicExample" class="table"  cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="th-sm">Línea
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Descripción
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Precio
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="contract th-sm">Contrato
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Nombre del Plan
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Cuenta
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
+                            <th class="th-sm">Línea</th>
+                            <th class="th-sm">Descripción</th>
+                            <th class="th-sm">Precio</th>
+                            <th class="contract th-sm">Contrato</th>
+                            <th class="th-sm">Nombre del Plan</th>
+                            <th class="th-sm">Cuenta</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,7 +113,7 @@
 
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{asset('js/vendors/jquery-ui.js')}}"></script>
     <script>
         var lineChartData = {
             labels: ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO'],
@@ -234,16 +222,6 @@
                     }
                 });
             };
-
-            document.getElementById('randomizeData').addEventListener('click', function () {
-                lineChartData.datasets.forEach(function (dataset) {
-                    dataset.data = dataset.data.map(function () {
-                        return randomScalingFactor();
-                    });
-                });
-
-                window.myLine.update();
-            });
     </script>
 
     <script>
@@ -270,21 +248,21 @@
         });
         $(function () {
             $("#report").resizable({
-                minHeight: 261,
+                minHeight: 236,
                 minWidth: 474,
                 maxWidth: 1011
             });
         });
         $(function () {
             $("#report2").resizable({
-                minHeight: 261,
+                minHeight: 235,
                 minWidth: 474,
                 maxWidth: 1011
             });
         });
         $(function () {
             $("#pending").resizable({
-                minHeight: 517,
+                minHeight: 472,
                 minWidth: 466,
                 maxWidth: 1011
             });
