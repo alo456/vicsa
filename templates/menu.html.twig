@@ -2,13 +2,12 @@
     <!-- Sidebar Holder -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <button type="button" style= "float:right" id="sidebarCollapse" class="btn btn-info">
+            <button type="button" style= "float:left" id="sidebarCollapse" class="btn btn-info">
                 <i class="fas fa-align-left"></i>
             </button>
-            <h3>Panel Vicsa</h3>
+            <h3>&nbspPanel Vicsa</h3>
             <strong></strong>
         </div>
-
         <ul class="list-unstyled components">
             <li id="home">
                 <a href="{{path('home')}}" >
@@ -73,10 +72,19 @@
         </div>
     </div>
 </div>
+        
+
+<script type="text/javascript">
+    if(Cookies.get('menu') == 1 ){
+        $('#sidebar , #content').addClass('active');
+         Cookies.set('menu', 1);
+    }else Cookies.set('menu', 0)
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
+            $('#sidebar , #content').toggleClass('active');
+            $('#sidebar').hasClass('active') ? Cookies.set('menu', 1) : Cookies.set('menu', 0);
         });
         $("#{{ app.request.attributes.get('_route') }}").addClass('active');
     });

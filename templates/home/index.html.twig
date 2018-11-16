@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 {% block title %} Dashboard {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="{{asset('css/vendors/jquery-ui.css')}}" rel="stylesheet">
     <style>
         td{
             background-color:#dc3545;
         }
     </style>
     <style>
-        #report { width: 474px; height: 261px; padding: 5px; float : left; display:block; }
+        #report { width: 474px; height: 236px; padding: 5px; float : left; display:block; }
         #report h3 { text-align: center; margin: 0; }
-        #report2 { width: 474px; height: 261px; padding: 5px; float : left; display:block; }
+        #report2 { width: 474px; height: 236px; padding: 5px; float : left; display:block; }
         #report2 h3 { text-align: center; margin: 0; }
-        #pending { width: 471px; height: 522px; padding: 5px;  float : left; display:block; }
+        #pending { width: 466px; height: 472px; padding: 5px;  float : left; display:block; }
         #pending h3 { text-align: center; margin: 0; }
     </style>
 {% endblock %}
@@ -23,29 +23,18 @@
         {% block content %}
             <div id="pending" class="ui-widget-content">
                 <h3 class="ui-widget-header">Notas Pendientes</h3>
-                <br>
+                <button  style=" float: right" type="button" class="btn btn-link" id="generate"><i class="fas fa-file-invoice"></i>&nbspGenerar Excel</button> 
+                
                 </br>
                 <table id="dtBasicExample" class="table"  cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="th-sm">Línea
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Descripción
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Precio
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Contrato
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Nombre del Plan
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
-                            <th class="th-sm">Activación
-                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                            </th>
+                            <th class="th-sm">Línea</th>
+                            <th class="th-sm">Descripción</th>
+                            <th class="th-sm">Precio</th>
+                            <th class="contract th-sm">Contrato</th>
+                            <th class="th-sm">Nombre del Plan</th>
+                            <th class="th-sm">Cuenta</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +51,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato </font></td>
+                            <td> <font color="#fff">Contrato</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -70,7 +59,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato </font></td>
+                            <td> <font color="#fff">Contrato</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -78,7 +67,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato </font></td>
+                            <td> <font color="#fff">Contrato</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -86,7 +75,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato </font></td>
+                            <td> <font color="#fff">Contrato</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -94,7 +83,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato </font></td>
+                            <td> <font color="#fff">Contrato</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -124,7 +113,7 @@
 
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{asset('js/vendors/jquery-ui.js')}}"></script>
     <script>
         var lineChartData = {
             labels: ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO'],
@@ -168,6 +157,7 @@
                     data: lineChartData,
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         hoverMode: 'index',
                         stacked: false,
                         scales: {
@@ -201,6 +191,7 @@
                     data: lineChartData,
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         hoverMode: 'index',
                         stacked: false,
                         scales: {
@@ -231,16 +222,6 @@
                     }
                 });
             };
-
-            document.getElementById('randomizeData').addEventListener('click', function () {
-                lineChartData.datasets.forEach(function (dataset) {
-                    dataset.data = dataset.data.map(function () {
-                        return randomScalingFactor();
-                    });
-                });
-
-                window.myLine.update();
-            });
     </script>
 
     <script>
@@ -250,15 +231,15 @@
                     .addClass('nowrap')
                     .dataTable({
                         dom: '<"top"l><f>rt<"bottom"ip><"clear">',
-                            pagingType: "full_numbers",
-                            language: {
-                                paginate: {
-                                    previous: "<i class='fas fa-backward'> </i>",
-                                    next: "<i class='fas fa-forward'> </i>",
-                                    first: "<i class='fas fa-step-backward'> </i>",
-                                    last: "<i class='fas fa-step-forward'> </i>",
-                                }
-                            },
+                        pagingType: "full_numbers",
+                        language: {
+                            paginate: {
+                                previous: "<i class='fas fa-backward'> </i>",
+                                next: "<i class='fas fa-forward'> </i>",
+                                first: "<i class='fas fa-step-backward'> </i>",
+                                last: "<i class='fas fa-step-forward'> </i>",
+                            }
+                        },
                         responsive: true,
                         columnDefs: [
                             {targets: [-1, -3], className: 'dt-body-right'}
@@ -267,27 +248,32 @@
         });
         $(function () {
             $("#report").resizable({
-                animate: true,
-                minHeight: 261,
+                minHeight: 236,
                 minWidth: 474,
                 maxWidth: 1011
             });
         });
         $(function () {
             $("#report2").resizable({
-                animate: true,
-                minHeight: 261,
+                minHeight: 235,
                 minWidth: 474,
                 maxWidth: 1011
             });
         });
         $(function () {
             $("#pending").resizable({
-                animate: true,
-                minHeight: 278,
-                minWidth: 471,
+                minHeight: 472,
+                minWidth: 466,
                 maxWidth: 1011
             });
+        });
+        $("#generate").click(function(){
+            var result = [];
+            $($('#dtBasicExample').DataTable().columns(".contract").data()[0]).each(function(){
+               result.push(this.match(/(?<=\>)\w*(?=\<)/g)); 
+            });
+            console.log(result);
+            
         });
     </script>
 
