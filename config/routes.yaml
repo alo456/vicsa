@@ -28,7 +28,7 @@ notes:
     
 settings:
     path: /admin/settings
-    controller: App\Controller\TestingController::index
+    controller: App\Controller\SettingsController::index
 
 testHome:
     path: /test
