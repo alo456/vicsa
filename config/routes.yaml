@@ -1,10 +1,14 @@
-upload:
-    path: /upload
-    controller: App\Controller\GeneratorController::index
+generate:
+    path: /admin/generate
+    controller: App\Controller\GeneratorController::generateExcel
   
 login:
     path: /admin/login
-    controller: App\Controller\TestingController::login
+    controller: App\Controller\HomeController::login
+
+logout:
+    path: /admin/logout
+    controller: App\Controller\HomeController::logout
 
 home:
     path: /admin/home
@@ -32,8 +36,14 @@ settings:
 
 testHome:
     path: /test
-    controller: App\Controller\TestingController::generateUser
+    controller: App\Controller\TestingController::generateData
 
 up:
     path: /up
     controller: App\Controller\PurchaseController::upload
+
+default:
+    path: /{path}
+    controller: App\Controller\HomeController::default
+    requirements:
+        path: .*

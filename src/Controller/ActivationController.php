@@ -29,9 +29,10 @@ class ActivationController extends Controller
     private $contractName = '';
     public function index(Request $request)
     {
+        ini_set('xdebug.var_display_max_data', '100000');
         $message = '';
         $activationNames = [];
-        $directory = $this->get('kernel')->getProjectDir() . '/Contracts';
+        $directory = $this->get('kernel')->getProjectDir() . '/public/Contracts';
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
@@ -57,11 +58,30 @@ class ActivationController extends Controller
             $text = $pages[0]->getText();
             $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
             //var_dump($text);
+            
             //-----------------------line number ------------------------------
             preg_match('/(?<=Línea: ).{10}/', $text, $matches);
             $lineNumber = $matches[0];
             //var_dump($lineNumber);
-            $savedFiles[$files[$i]] = $lineNumber;
+
+            //-----------------------office (sucursal) ------------------------------
+            preg_match('/(?<=PARA USO EXCLUSIVO DE TELCEL ).* DIST AUT/', $text, $matches);
+            $matches = $matches[0];
+            $office = $this->extraer($matches,'DIST');
+            $office = $this->getOfficeLocation($office);
+            //var_dump($office);
+
+            //-----------------------account number ------------------------------
+            preg_match('/(?<=No. de Cuenta: ).* CONTRATO DE PRESTACIÓN/', $text, $matches);
+            $matches = $matches[0];
+            $acct_numb = $this->extraer($matches,'CONTRATO');
+            //var_dump($acct_numb);
+
+            $savedFiles[$files[$i]] = array(
+                'line' => $lineNumber,
+                'location' => $office,
+                'account' => $acct_numb
+            );
         }
         //var_dump($savedFiles);
         
@@ -182,7 +202,7 @@ class ActivationController extends Controller
     
                     
                     //------------employee test------------------
-                    $employee = $em->getRepository('App\Entity\Employee')->findOneBy(array('email' => "jorge@vicsa.com"));
+                    $employee = $em->getRepository('App\Entity\Employee')->findOneBy(array('email' => "fer@vicsa.com"));
     
                     
                     $contract ->setEmployee($employee);
@@ -378,6 +398,37 @@ class ActivationController extends Controller
 
         return $name[$month];
 
+    }
+
+    public function getOfficeLocation($code){
+        $location = '';
+        switch ($code){
+            case "PNTVSA01":
+                $location = "Oaxaca";
+                break;
+            case "PNTVSA02":
+                $location = "Tlaxiaco";
+                break;
+            case "VSA01":
+                $location = "Putla";
+                break;
+            case "VSA02":
+                $location = "Tlaxiaco (anterior)";
+                break;
+            case "VSA03":
+                $location = "Franco";
+                break;
+            case "VSA04":
+                $location = "Pba";
+                break;
+            case "VSASIN":
+                $location = "Sinergia";
+                break;
+            default:
+                $location = "No especificado";
+                break;
+        }
+        return $location;
     }
 
 }

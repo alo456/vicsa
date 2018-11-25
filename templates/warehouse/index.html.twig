@@ -23,11 +23,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for desc in description  %}
+                        {% for desc, name in description  %}
                             <tr>
                                 <td>{{ desc }}</td>
-                                <td>{{ quantity[loop.index] }}
-                                <td> {{ total[loop.index]}}
+                                <td>{{ name.quantity }}
+                                <td> {{ name.price }}
                             </tr>
                         {% endfor %}
                     </tbody>    

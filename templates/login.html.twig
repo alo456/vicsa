@@ -12,13 +12,17 @@
                     <img src="{{ asset('img/img-01.png') }}" class="js-tilt" />
                 </div>
 
-                <form class="login100-form validate-form" method='post'>
+                <form action="{{ path('login') }}" class="login100-form validate-form" method='post'>
                     <span class="login100-form-title">
                         Iniciar Sesión
                     </span>
 
+                    {% if error %}
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
                     <div class="wrap-input100 validate-input" data-validate = "Email válido requerido ej: alguien@dominio.com">
-                        <input class="input100" type="text" name="email" placeholder="Correo">
+                        <input class="input100" type="text" name="_email" placeholder="Correo">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -26,7 +30,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate = "Contraseña requerida">
-                        <input class="input100" type="password" name="password" placeholder="Contraseña">
+                        <input class="input100" type="password" name="_password" placeholder="Contraseña">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>

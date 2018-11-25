@@ -34,7 +34,7 @@
                             <th class="th-sm">Precio</th>
                             <th class="contract th-sm">Contrato</th>
                             <th class="th-sm">Nombre del Plan</th>
-                            <th class="th-sm">Cuenta</th>
+                            <th class="account th-sm">Cuenta</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,13 +123,13 @@
                     backgroundColor: window.chartColors.red,
                     fill: false,
                     data: [
-        {{ sales[1] }},
-        {{ sales[2] }},
-        {{ sales[3] }},
-        {{ sales[4] }},
-        {{ sales[5] }},
-        {{ sales[6] }},
-        {{ sales[7] }}
+                            {{ sales[1] }},
+                            {{ sales[2] }},
+                            {{ sales[3] }},
+                            {{ sales[4] }},
+                            {{ sales[5] }},
+                            {{ sales[6] }},
+                            {{ sales[7] }}
                         ],
                         yAxisID: 'y-axis-1',
                     }, {
@@ -138,13 +138,13 @@
                         backgroundColor: window.chartColors.blue,
                         fill: false,
                         data: [
-        {{ purchases[1] }},
-        {{ purchases[2] }},
-        {{ purchases[3] }},
-        {{ purchases[4] }},
-        {{ purchases[5] }},
-        {{ purchases[6] }},
-        {{ purchases[7] }}
+                            {{ purchases[1] }},
+                            {{ purchases[2] }},
+                            {{ purchases[3] }},
+                            {{ purchases[4] }},
+                            {{ purchases[5] }},
+                            {{ purchases[6] }},
+                            {{ purchases[7] }}
                         ],
                         yAxisID: 'y-axis-2'
                     }]
@@ -269,10 +269,28 @@
         });
         $("#generate").click(function(){
             var result = [];
-            $($('#dtBasicExample').DataTable().columns(".contract").data()[0]).each(function(){
-               result.push(this.match(/(?<=\>)\w*(?=\<)/g)); 
+            $($('#dtBasicExample').DataTable().columns(".account").data()[0]).each(function(){
+                var account = this.match(/(?<=\>).*(?=\<)/g);
+                account = $.trim(account);
+               result.push(account); 
             });
             console.log(result);
+            $.ajax({
+                url:'{{ (path('generate')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "accounts": "result"
+                },
+                async: true
+                /*success: function (data)
+                {
+                    console.log(data)
+                    $('div#ajax-results').html(data.output);
+
+                }*/
+            });
+            return false;
             
         });
     </script>

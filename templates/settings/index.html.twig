@@ -2,11 +2,25 @@
 {% block body %}
     {% embed 'menu.html.twig' %}
         {% block content %}
-            <h3>Lorem</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet iaculis justo, ut pharetra lacus convallis ut. Curabitur est diam, maximus ut mollis ut, tincidunt et enim. Proin ligula arcu, pharetra semper facilisis vitae, pharetra sit amet sapien. Phasellus vitae faucibus urna. Cras in gravida lacus. Suspendisse tincidunt feugiat nisi eget feugiat. Nunc felis tortor, fermentum eget nibh vehicula, laoreet gravida augue. Ut hendrerit sollicitudin mattis. Fusce in venenatis velit, sed hendrerit felis. Duis ut tincidunt mi. Etiam lorem mauris, suscipit vel lectus ac, dapibus commodo lacus.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet iaculis justo, ut pharetra lacus convallis ut. Curabitur est diam, maximus ut mollis ut, tincidunt et enim. Proin ligula arcu, pharetra semper facilisis vitae, pharetra sit amet sapien. Phasellus vitae faucibus urna. Cras in gravida lacus. Suspendisse tincidunt feugiat nisi eget feugiat. Nunc felis tortor, fermentum eget nibh vehicula, laoreet gravida augue. Ut hendrerit sollicitudin mattis. Fusce in venenatis velit, sed hendrerit felis. Duis ut tincidunt mi. Etiam lorem mauris, suscipit vel lectus ac, dapibus commodo lacus.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet iaculis justo, ut pharetra lacus convallis ut. Curabitur est diam, maximus ut mollis ut, tincidunt et enim. Proin ligula arcu, pharetra semper facilisis vitae, pharetra sit amet sapien. Phasellus vitae faucibus urna. Cras in gravida lacus. Suspendisse tincidunt feugiat nisi eget feugiat. Nunc felis tortor, fermentum eget nibh vehicula, laoreet gravida augue. Ut hendrerit sollicitudin mattis. Fusce in venenatis velit, sed hendrerit felis. Duis ut tincidunt mi. Etiam lorem mauris, suscipit vel lectus ac, dapibus commodo lacus.</p>
-            
+            <div class="card">
+                <!-- TITULO -->
+                      <div class="card-header">
+                      <h4 class="card-title">Contraseña</h4>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                
+                            {{form_start (formPassword) }}
+                            {{form_end (formPassword) }}
+                            {{message}}
+
+                            </div>
+                          </div>
+                      </div>
+            </div>
+    
         {% endblock %}
     {% endembed %}
 {% endblock %}

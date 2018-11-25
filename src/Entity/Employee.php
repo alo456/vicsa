@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EmployeeRepository")
  */
-class Employee
+class Employee implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -37,6 +38,11 @@ class Employee
      * @ORM\Column(type="string", length=255)
      */
     private $job;
+
+     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Contract", mappedBy="employee")
@@ -101,6 +107,18 @@ class Employee
         return $this;
     }
 
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Contract[]
      */
@@ -131,4 +149,31 @@ class Employee
 
         return $this;
     }
+
+
+    public function eraseCredentials() {
+        
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array {
+        return ['ROLE_ADMIN'];
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSalt(): string {
+        return $this->email;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getUsername(): string {
+        return $this->getEmail();
+    }
+
 }

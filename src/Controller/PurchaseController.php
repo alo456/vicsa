@@ -27,7 +27,7 @@ class PurchaseController extends Controller
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);
-        $directory = $this->get('kernel')->getProjectDir() . '\Excel';
+        $directory = $this->get('kernel')->getProjectDir() . '\public\Excel';
         if($formFiles->isSubmitted() && $formFiles->isValid()){
             //var_dump($formFiles->getData()['files'][0]);
             $file = $formFiles->getData()['files'][0];
@@ -61,6 +61,7 @@ class PurchaseController extends Controller
         $cquantity = 36;
         $discount = 0.0;
         $c_iccid_imei = 38;
+        $c_mat_key = 34;
 
         //se definen las columnas para Device/Sim
         $cdescripcion = 35;
@@ -74,6 +75,7 @@ class PurchaseController extends Controller
         $iccid_imei = array();
         $descripcions = array();
         $prices = array();
+        $mat_keys = array();
 
         for ($row = 2; $row <= $highestRow; ++$row) {
 
@@ -94,6 +96,9 @@ class PurchaseController extends Controller
 
             $items = $worksheet->getCellByColumnAndRow($cprice, $row)->getValue();
             $prices[] = $items;
+
+            $items = $worksheet->getCellByColumnAndRow($c_mat_key, $row)->getValue();
+            $mat_keys[] = $items;
         }
 
         for ($i = 0; $i < $highestRow - 1;  ++$i) {
@@ -109,18 +114,19 @@ class PurchaseController extends Controller
                 //Device Bill
                 if ($Bill == null) {
 
-
                     $Bill = new DeviceBill();
                     $Bill->setDocNumber($docs_number[$i]);
                     $Bill->setbillDate($dateObj);
                     $Bill->setPaymentTerm($payment_term);
-                    $Bill->setQuantity($quantitys[$i]);
+                    $Bill->setQuantity(1);
                     $Bill->setDiscount($discount);
+                    $em->persist($Bill);
+                    $em->flush();
                 }
 
                 $Device = new Device();
                 $Device->setImei($iccid_imei[$i]);
-                $Device->setMatKey(0);
+                $Device->setMatKey($mat_keys[$i]);
                 $Device->setDescription($descripcions[$i]);
                 $Device->setPrice($prices[$i]);
                 $Device->setEntryDate($dateObj);
@@ -129,8 +135,8 @@ class PurchaseController extends Controller
                 $Device->setDeviceBill($Bill);
                 $Device->setNote(NULL);
                 $Bill->addDevice($Device);
+                $Bill->setQuantity($Bill->getQuantity() + 1);
                 $em->persist($Device);
-                $em->persist($Bill);
                 $em->flush();
 
 
@@ -142,28 +148,30 @@ class PurchaseController extends Controller
                 //SimBill
                 if ($Bill == null) {
                     $Bill = new SimBill();
-                    $Bill . setdocNumber($docs_number[$i]);
-                    $Bill . setbillDate($dateObj);
-                    $Bill . setPaymentTerm($payment_term);
-                    $Bill . setQuantity($quantitys[$i]);
-                    $Bill . setDiscount($discount);
+                    $Bill->setdocNumber($docs_number[$i]);
+                    $Bill->setbillDate($dateObj);
+                    $Bill->setPaymentTerm($payment_term);
+                    $Bill->setQuantity(1);
+                    $Bill->setDiscount($discount);
+                    $em->persist($Bill);
+                    $em->flush();
                 }
 
 
                 //SIM
-                $Device = new Sim();
-                $Device->setIccid($iccid_imei[$i]);
-                $Device->setMatKey(0);
-                $Device->setDescription($descripcions[$i]);
-                $Device->setPrice($prices[$i]);
-                $Device->setEntryDate($dateObj);
-                $Device->setExitDate(null);
-                $Device->setWarehouse(null);
-                $Device->setSimBill($Bill);
-                $Device->setNote(NULL);
-                $Bill->addSim($Device);
-                $em->persist($Device);
-                $em->persist($Bill);
+                $sim = new Sim();
+                $sim->setIccid($iccid_imei[$i]);
+                $sim->setMatKey($mat_keys[$i]);
+                $sim->setDescription($descripcions[$i]);
+                $sim->setPrice($prices[$i]);
+                $sim->setEntryDate($dateObj);
+                $sim->setExitDate(null);
+                $sim->setWarehouse(null);
+                $sim->setSimBill($Bill);
+                $sim->setNote(NULL);
+                $Bill->addSim($sim);
+                $Bill->setQuantity($Bill->getQuantity() + 1);
+                $em->persist($sim);
                 $em->flush();
             }
         }

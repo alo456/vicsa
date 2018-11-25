@@ -17,15 +17,19 @@
             <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                     <tr>
+                        <th class="th-sm">No. de Cuenta</th>
                         <th class="th-sm">Archivo</th>
                         <th class="th-sm">Línea</th>
+                        <th class="th-sm">Sucursal</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for file , line in savedFiles %}
+                    {% for file, data in savedFiles %}
                         <tr>
-                            <td><a href="{{ file }}">{{ file }}</a></td>
-                            <td>{{ line }}</td>
+                            <td>{{ data.account }}</td>
+                            <td><a id= "downloadFile" href="/vicsa/public/Contracts/{{ file }}">{{ file }}</a></td>
+                            <td>{{ data.line }}</td>
+                            <td>{{ data.location }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

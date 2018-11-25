@@ -1,14 +1,15 @@
 security:
     encoders:
-        App\Entity\User:
-            algorithm: argon2i
+        App\Entity\Employee:
+            algorithm: bcrypt
+            cost: 4
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: App\Entity\Employee
                 property: email
     firewalls:
         dev:
@@ -17,6 +18,17 @@ security:
         main:
             anonymous: true
 
+            form_login:
+                login_path: login 
+                check_path: login
+                username_parameter: _email
+                provider: app_user_provider
+                default_target_path: home
+                #always_use_default_target_path: true
+
+            logout:
+                path: logout
+                target: login   
             # activate different ways to authenticate
 
             # http_basic: true
@@ -28,5 +40,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/vicsa/Contracts|Excel|Notes, roles: ROLE_ADMIN}
+       # - { path: ^/profile, roles: ROLE_USER }

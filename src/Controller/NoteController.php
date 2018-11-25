@@ -30,7 +30,7 @@ class NoteController extends Controller
     {
         ini_set('xdebug.var_display_max_data', '110000');
         $noteNames = $message = [];
-        $directory = $this->get('kernel')->getProjectDir() . '/Notes';
+        $directory = $this->get('kernel')->getProjectDir() . '/public/Notes';
         $form = $this->get('form.factory');
         $formFiles = $form->createNamedBuilder("Files", VFileType::class, [])->getForm();
         $formFiles->handleRequest($request);

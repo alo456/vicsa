@@ -10,6 +10,8 @@ use \DateTime;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class HomeController extends AbstractController
 {
@@ -137,18 +139,28 @@ class HomeController extends AbstractController
         
     }
 
-    public function login()
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        
-        return $this->render('login.html.twig');
+        if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('home');
+        }
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
     }
 
-    public function test(){
-         $dStart = new DateTime('2018-10-26');
-        $dEnd  = new DateTime(date('Y-m-d', time()));
-   $dDiff = $dStart->diff($dEnd);
-   return new Response ($dDiff->days);
+    public function logout(){
+
     }
-    
+
+    public function default(){
+        return $this->redirectToRoute('home');
+    }
    
 }
