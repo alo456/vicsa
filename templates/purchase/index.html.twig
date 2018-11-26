@@ -61,10 +61,9 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
-            $('#dtBasicExample')
+            var table = $('#dtBasicExample')
                     .addClass('nowrap')
                     .dataTable({
-                        dom: '<"top"l><i<f>>rt<"bottom"lip><"clear">',
                             pagingType: "full_numbers",
                             language: {
                                 paginate: {
@@ -75,10 +74,13 @@
                                 }
                             },
                         responsive: true,
+                        "lengthMenu": [ [10, 25, 50, -1], [10 + " Registros", 25 + " Registos", 50 + " Registos", "Todos"] ],
                         columnDefs: [
                             {targets: [-1], className: 'dt-body-right'}
                         ]
                     });
+                    
+    new $.fn.dataTable.FixedHeader( table );
         });
     </script>
 
