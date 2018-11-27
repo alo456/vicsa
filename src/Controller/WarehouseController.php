@@ -24,6 +24,7 @@ class WarehouseController extends AbstractController
             $costoNeto = $wh[0]->getCost();
             $devices = $wh[0]->getDevices();
             $sims = $wh[0]->getSims();
+            $valorTotalWH = $wh[0]->getCost();
             $descriptions = [];
             //sacamos cada device del warehouse
             foreach ($devices as $dev) {
@@ -37,7 +38,6 @@ class WarehouseController extends AbstractController
                         $descriptions[$desc]['quantity'] = 1;
                         $descriptions[$desc]['price'] = $dev->getPrice();
                     }
-                    $valorTotalWH += $dev->getPrice();
                 }       
             }
 
@@ -53,7 +53,6 @@ class WarehouseController extends AbstractController
                             $descriptions[$desc]['quantity'] = 1;
                             $descriptions[$desc]['price'] = $sim->getPrice();
                         }
-                        $valorTotalWH += $sim->getPrice();
                     }
                 }   
         }

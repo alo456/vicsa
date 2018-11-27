@@ -76,27 +76,25 @@ class HomeController extends AbstractController
         }
         else{
             foreach($act as $pend){
-                $pends[$pend->getLineNumber()] = array(
-                    $pend->getDevice()->getDescription(), 
-                    $pend->getDevice()->getPrice(),
-                    $pend->getContract()->getAccountNumber(),
-                    $pend->getContract()->getPlanName(),
-                    $pend->getActDate()->format('Y-m-d H:i:s')
-                );
-                 foreach($pend->getSim() as $sim){
-                    $total+=$sim->getPrice();
-                }
-                foreach($pend->getDevice() as $device){
-                    $total+=$device->getPrice();
-                }
+                $sim = $pend->getSim();
+                $total+=$sim->getPrice();
+
+                $device = $pend->getDevice();
+                $total+=$device->getPrice();
                 
-                $dateA=$pend->getActDate()->format('Y-m-d H:i:s'); //fecha en activacion
+                $dateA=$pend->getActDate(); //fecha en activacion
                 
                 $dateB= new DateTime(date('Y-m-d H:i:s', time()));//fecha actual
-               $rDate= $dateA->diff($dateB);
-              
-               $days[]=$rDate->days;
-                
+                $rDate= $dateA->diff($dateB);
+
+                $pends[$pend->getLineNumber()] = array(
+                    'description'   => $device->getDescription(), 
+                    'price'         => $device->getPrice(),
+                    'account'       => $pend->getContract()->getAccountNumber(),
+                    'plan'          => $pend->getContract()->getPlanName(),
+                    'actDate'       => $pend->getActDate()->format('Y-m-d H:i:s'),
+                    'days'          => $rDate->days
+                );
             }
         }
 
@@ -132,8 +130,7 @@ class HomeController extends AbstractController
             'pends' => $pends,
             'sales' => $sales,
             'purchases' => $purchases,
-            'total'=> $total,
-            'dias' => $days
+            'total'=> $total
         ]);
 
         

@@ -17,7 +17,7 @@ class Sim
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=19)
+     * @ORM\Column(type="string", length=19, unique=true)
      */
     private $iccid;
 

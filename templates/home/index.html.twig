@@ -32,26 +32,27 @@
                             <th class="th-sm">Línea</th>
                             <th class="th-sm">Descripción</th>
                             <th class="th-sm">Precio</th>
-                            <th class="contract th-sm">Contrato</th>
-                            <th class="th-sm">Nombre del Plan</th>
+                            <th class="contract th-sm">Días</th>
+                            <th class="th-sm">Plan</th>
                             <th class="account th-sm">Cuenta</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for key, pend in pends %}
                             <tr>
-                                <td> {{key}} </td>
-                                <td> {{pend[0]}} </td>
-                                <td> {{pend[1]}} </td>
-                                <td> {{pend[2]}} </td>
-                                <td> {{pend[3]}} </td>  
+                                <td> <font color="#fff"> {{key}} </font></td>
+                                <td> <font color="#fff"> {{pend.description}} </font></td>
+                                <td> <font color="#fff"> {{pend.price}} </font></td>
+                                <td> <font color="#fff"> {{pend.days}} </font></td>
+                                <td> <font color="#fff"> {{pend.plan}} </font></td> 
+                                <td> <font color="#fff"> {{pend.account}} </font></td>   
                             </tr>   
                         {% endfor %}
                         <tr>
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato</font></td>
+                            <td> <font color="#fff">5</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -59,7 +60,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato</font></td>
+                            <td> <font color="#fff">10</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -67,7 +68,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato</font></td>
+                            <td> <font color="#fff">15</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -75,7 +76,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato</font></td>
+                            <td> <font color="#fff">20</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>
@@ -83,7 +84,7 @@
                             <td> <font color="#fff">9512234568 </font> </td>
                             <td> <font color="#fff"> HUAWEI LTE </font></td>
                             <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">Contrato</font></td>
+                            <td> <font color="#fff">25</font></td>
                             <td> <font color="#fff">Plan </font></td>
                             <td> <font color="#fff">Activacion </font></td>
                         </tr>

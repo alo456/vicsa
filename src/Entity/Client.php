@@ -19,7 +19,7 @@ class Client
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=13)
+     * @ORM\Column(type="string", length=13, unique=true)
      */
     private $rfc;
 
