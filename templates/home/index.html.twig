@@ -13,6 +13,9 @@
 {% block body %}
     {% embed 'menu.html.twig' %}
         {% block content %}
+
+
+
             <div id="pending" class="card mb-2">
                 <div class="card-header" > Notas Por Pagar</div>
                 <div class="card-body">
@@ -198,7 +201,6 @@
                                 text: '<i class="fas fa-download"></i>',
                                 className: 'btn btn-primary'
                             }
-
                         ],
                         "lengthMenu": [[10, 25, 50, -1], [10 + " Registros", 25 + " Registos", 50 + " Registos", "Todos"]],
                         responsive: true
@@ -213,7 +215,6 @@
             $('#dtBasicExample_filter').removeClass('dataTables_filter');
             $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
-
         });
         $("#generate").click(function () {
             var result = [];
@@ -243,4 +244,3 @@
     </script>
 
 {% endblock %}
-
