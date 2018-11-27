@@ -22,7 +22,7 @@
                         <tbody>
                             {% for purch in purchase %}
                                 <tr>
-                                    <td><a href="/vicsa/public/Excel/{{ purch.description }}">{{ purch.description }}</a></td>
+                                    <td><a class="btn-link" href="/vicsa/public/Excel/{{ purch.description }}">{{ purch.description }}</a></td>
                                     <td>{{ purch.entryDate | date("d/m/Y",false) }}</td>
                                     {% if purch.exitDate == NULL %} 
                                         <td>Aún en almacén</td>

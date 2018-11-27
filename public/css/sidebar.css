@@ -22,10 +22,7 @@ a:focus {
     text-decoration: none;
     transition: all 0.3s;
 }
-a:hover {
-    color : #fff !important;
-    background-color: #064AA2 !important;
-}
+
 
 .navbar {
     padding: 15px 10px;
@@ -76,7 +73,10 @@ span {
     color: #476FA2;
     transition: all 0.3s;
 }
-
+#sidebar a:hover {
+    color : #fff !important;
+    background-color: #064AA2 !important;
+}
 .sidebar-header h3{
     color: #fff !important;
 }
