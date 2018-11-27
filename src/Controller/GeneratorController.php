@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use Smalot\PdfParser\Parser;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -86,9 +87,10 @@ class GeneratorController extends Controller {
     }
 
 
-    public function generateExcel(){
+    public function generateExcel(Request $contracts){
         $em = $this->getDoctrine()->getManager();
-        $contracts = ['F-74064258', 'F-74064257'];
+        //$contracts = ['F-74064258', 'F-74064257'];
+        $contracts = $contracts->request->get('accounts');
         $i = 0; 
         //-------------------------------looking for excel info into each device's IMEI---------------
         foreach($contracts as $contractNumber){
@@ -224,15 +226,25 @@ class GeneratorController extends Controller {
          $writer = new Xlsx($spreadsheet);
         
          // Create a Temporary file in the system
-         $fileName = 'ACLARACIONES.xlsx';
+         $fileName = 'aclaraciones.xlsx';
          $publicDirectory = $this->get('kernel')->getProjectDir() . '/public/Reports';
-         $excelFilepath =  $publicDirectory . '/aclaraciones.xlsx';
+         $excelFilepath =  $publicDirectory.'/'.$fileName;
          
          // Create the excel file in the tmp directory of the system
          $writer->save($excelFilepath);
          
          // Return the excel file as an attachment
-         return $this->file($excelFilepath, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+         $response = new BinaryFileResponse($excelFilepath);
+         $response->headers->set(
+            'Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $fileName
+        );
+         return $response;
+         //return $this->file($excelFilepath, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+         
 
     }
 
