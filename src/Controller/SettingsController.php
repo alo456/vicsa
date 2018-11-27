@@ -23,7 +23,7 @@ class SettingsController extends AbstractController
         ->add('oldpassword', PasswordType::class, array('label' => 'Contraseña Actual',
             'attr' => array(
                 'class' => 'form-control',
-                'placeholder' => 'Contraseña Actual'
+                'placeholder' => 'Contraseña'
             )
         ))
         ->add('newpassword', RepeatedType::class, array(
@@ -34,12 +34,12 @@ class SettingsController extends AbstractController
                 )),
             'second_options' => array('label' => 'Confirmación de Contraseña', 'attr' => array(
                     'class' => 'form-control',
-                    'placeholder' => 'Confirmación de Contraseña'
+                    'placeholder' => 'Repite la Contraseña'
                 ))
         ))
         ->add('submit', SubmitType::class, array('label' => 'Guardar',
             'attr' => array(
-                'class' => 'btn btn-primary px-4'
+                'class' => 'btn btn-primary'
             )
         ))
         ->getForm();
