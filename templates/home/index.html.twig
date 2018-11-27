@@ -191,11 +191,14 @@
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
             $('#rows').append(table.rows().count());
             $('#money').append(table.column(2).data().sum().toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-
+            if(table.column(5).data().toArray().length == 0){
+                $("#generate").addClass('disabled');
+            }
             $("#generate").click(function () {
                 var result = table.column(5).data().toArray();
                 console.log(result);
-                $.ajax({
+                if(result.length != 0) {
+                    $.ajax({
                     url: '{{ (path('generate')) }}',
                     type: "POST",
                     dataType: "json",
@@ -204,14 +207,15 @@
                     },
                     async: true,
                     success: function (result) {
-                        console.log("gola")
                         $("#success").show();
+                        window.location = 'generate';
                     },
                     error: function (result) {
-                        console.log("jj");
                         $("#error").show();
+                         window.location = 'generate';
                     }
-                });
+                    });
+                }
             });
         });
 

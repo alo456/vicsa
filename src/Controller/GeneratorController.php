@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -88,6 +88,12 @@ class GeneratorController extends Controller {
 
 
     public function generateExcel(Request $contracts){
+        if($contracts->isMethod('get')){
+            $fileName = 'aclaraciones.xlsx';
+            $publicDirectory = $this->get('kernel')->getProjectDir() . '/public/Reports';
+            $excelFilepath = $publicDirectory . '/' . $fileName;
+            return $this->file($excelFilepath, $fileName , ResponseHeaderBag::DISPOSITION_INLINE);
+        }
         $em = $this->getDoctrine()->getManager();
         //$contracts = ['F-74064258', 'F-74064257'];
         $contracts = $contracts->request->get('accounts');
@@ -242,7 +248,8 @@ class GeneratorController extends Controller {
             ResponseHeaderBag::DISPOSITION_INLINE,
             $fileName
         );
-         return $response;
+        return new JsonResponse("OK"
+        );
          //return $this->file($excelFilepath, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
          
 

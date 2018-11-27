@@ -2,6 +2,9 @@ generate:
     path: /admin/generate
     controller: App\Controller\GeneratorController::generateExcel
   
+generatedata:
+    path: /admin/data
+    controller: App\Controller\TestingController::generateData
 login:
     path: /admin/login
     controller: App\Controller\HomeController::login
