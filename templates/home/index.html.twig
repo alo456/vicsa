@@ -12,9 +12,9 @@
                                 <th class="th-sm">Línea</th>
                                 <th class="th-sm">Descripción</th>
                                 <th class="th-sm">Precio</th>
-                                <th class="contract th-sm">Días</th>
+                                <th class="th-sm">Días</th>
                                 <th class="th-sm">Plan</th>
-                                <th class="account th-sm">Cuenta</th>
+                                <th class="th-sm">Cuenta</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +84,30 @@
                     </div>
                     <div class="row">
                         <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="susccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content alert alert-success">
+                        <div class="modal-body">
+                            Se ha generado
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Error
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,7 +209,10 @@
                             },
                             {
                                 text: '<i class="fas fa-download"></i>',
-                                className: 'btn btn-primary'
+                                className: 'btn btn-primary',
+                                attr: {
+                                    id: 'generate'
+                                }
                             }
                         ],
                         "lengthMenu": [[10, 25, 50, -1], [10 + " Registros", 25 + " Registos", 50 + " Registos", "Todos"]],
@@ -203,32 +230,30 @@
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
             $('#rows').append(table.rows().count());
             $('#money').append(table.column(2).data().sum().toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-        });
-        $("#generate").click(function () {
-            var result = [];
-            $($('#dtBasicExample').DataTable().columns(".account").data()[0]).each(function () {
-                var account = this.match(/(?<=\>).*(?=\<)/g);
-                account = $.trim(account);
-                result.push(account);
+
+            $("#generate").click(function () {
+                var result = table.column(5).data().toArray();
+                console.log(result);
+                $.ajax({
+                    url: '{{ (path('generate')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "accounts": result
+                    },
+                    async: true,
+                    success: function (result) {
+                        console.log("gola")
+                        $("#success").show();
+                    },
+                    error: function (result) {
+                        console.log("jj");
+                        $("#error").show();
+                    }
+                });
             });
-            console.log(result);
-            $.ajax({
-                url: '{{ (path('generate')) }}',
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "accounts": "result"
-                },
-                async: true
-                        /*success: function (data)
-                         {
-                         console.log(data)
-                         $('div#ajax-results').html(data.output);
-                         
-                         }*/
-            });
-            return false;
         });
+
     </script>
 
 {% endblock %}
