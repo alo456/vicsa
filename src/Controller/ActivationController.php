@@ -98,7 +98,7 @@ class ActivationController extends Controller
         ini_set('xdebug.var_display_max_data', '100000');
 
         for($i=0;$i<sizeof($activationNames);$i++){
-            $file = $this->get('kernel')->getProjectDir() . '/Contracts/'. $activationNames[$i];
+            $file = $this->get('kernel')->getProjectDir() . '/public/Contracts/'. $activationNames[$i];
             $PDFParser = new Parser();
             $pdf = $PDFParser->parseFile($file);
             $text = $pdf->getText();
@@ -171,6 +171,10 @@ class ActivationController extends Controller
                     $warehouse -> removeSim($sim);
                     $warehouse -> setQuantity($warehouse->getQuantity()-1);
                     $warehouse -> setCost($warehouse->getCost() - $sim -> getPrice());
+
+                    //--------------------updating device & sim exit date----------------
+                    $device -> setExitDate($actDate);
+                    $sim->setExitDate($actDate);
     
                     $em -> persist($activation);
     

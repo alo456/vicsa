@@ -82,7 +82,7 @@ class NoteController extends Controller
         ini_set('xdebug.var_display_max_data', '110000');
 
         for($i=0;$i<sizeof($noteNames);$i++){
-            $file = $this->get('kernel')->getProjectDir() . '/Notes/'. $noteNames[$i];
+            $file = $this->get('kernel')->getProjectDir() . '/public/Notes/'. $noteNames[$i];
             $PDFParser = new Parser();
             $pdf = $PDFParser->parseFile($file);
             $text = $pdf->getText();
@@ -107,7 +107,7 @@ class NoteController extends Controller
 
         //-------------------------checking for existing note-------------------
         $note = $em->getRepository('App\Entity\Note')->findOneBy(array('docNumber' => $doc_number));
-        var_dump($note->getId());
+        if($note) var_dump($note->getId());
         if($note == null){
             //-------------------------date-------------------------------
             preg_match('/(?<=FECHA Y HORA DE EXPEDICIÓN ).* SERIE - FOLIO/', $text, $matches);
@@ -149,6 +149,7 @@ class NoteController extends Controller
             $note -> setDiscount($discount);
 
             $em->persist($note);
+
             //-------------------------IMEI/ICCID-------------------------------
             $imei = $iccid = null;
             preg_match('/(?<=CDV7 ).* CLAVE PROD O SERV/', $text, $matches);
@@ -160,6 +161,8 @@ class NoteController extends Controller
                 try{
                     $device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' => $imei));
                     $note -> addDevice($device);
+                    $activation = $em->getRepository('App\Entity\Activation')->findOneBy(array('device' => $device->getId()));
+                    $activation->setNote($note);
                     $message[$imei] = $note;
                 }
                 catch(\Exception $ex){

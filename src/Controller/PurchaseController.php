@@ -44,8 +44,9 @@ class PurchaseController extends Controller
     }
     
     private function extractExcel($fileName){
+        $message = [];
         $em = $this->getDoctrine()->getManager();
-        $inputFileName = $this->get('kernel')->getProjectDir() . '\Excel\\'.$fileName;  //ruta del archivo
+        $inputFileName = $this->get('kernel')->getProjectDir() . '/public/Excel/'.$fileName;  //ruta del archivo
         
         //var_dump($inputFileName);
         
@@ -76,6 +77,7 @@ class PurchaseController extends Controller
         $descripcions = array();
         $prices = array();
         $mat_keys = array();
+        $warehouse = $em->getRepository('App\Entity\Warehouse')->findOneBy(array('id' => 6));
 
         for ($row = 2; $row <= $highestRow; ++$row) {
 
@@ -104,76 +106,86 @@ class PurchaseController extends Controller
         for ($i = 0; $i < $highestRow - 1;  ++$i) {
             $lenght = strlen($iccid_imei[$i]);
             $dateObj = \DateTime::createFromFormat("m.d.Y", $bills_date[$i]);
-            if (!$dateObj) {
-                throw new \UnexpectedValueException("Could not parse the date: $bills_date[$i]");
-            }
+            if ($dateObj) {
+                if ($lenght == 15) {
+                    //es ime -> Device
+                    $Bill = $em->getRepository('App\Entity\DeviceBill')->findOneBy(array('docNumber' => $docs_number[$i]));
+                    $Device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' =>$iccid_imei[$i]));
+                    //Device Bill
+                    if ($Bill == null) {
 
-            if ($lenght == 15) {
-                //es ime -> Device
-                $Bill = $em->getRepository('App\Entity\DeviceBill')->findOneBy(array('docNumber' => $docs_number[$i]));
-                //Device Bill
-                if ($Bill == null) {
+                        $Bill = new DeviceBill();
+                        $Bill->setDocNumber($docs_number[$i]);
+                        $Bill->setbillDate($dateObj);
+                        $Bill->setPaymentTerm($payment_term);
+                        $Bill->setQuantity(1);
+                        $Bill->setDiscount($discount);
+                        $em->persist($Bill);
+                        $em->flush();
+                    }
+                    if(!$Device){
+                        $Device = new Device();
+                        $Device->setImei($iccid_imei[$i]);
+                        $Device->setMatKey($mat_keys[$i]);
+                        $Device->setDescription($descripcions[$i]);
+                        $Device->setPrice($prices[$i]);
+                        $Device->setEntryDate($dateObj);
+                        $Device->setExitDate(null);
+                        $Device->setDeviceBill($Bill);
+                        $Device->setNote(NULL);
+                        $Bill->addDevice($Device);
+                        $Bill->setQuantity($Bill->getQuantity() + 1);
+                        $warehouse->addDevice($Device);
+                        $em->persist($Device);
+                        $em->flush();
+                    }
+                    
+                    //SIM
+                } else if ($lenght == 19) {
+                    // es iccid ->SIM
+                    $Bill = $em->getRepository('App\Entity\SimBill')->findOneBy(array('docNumber' => $docs_number[$i]));
+                    $sim = $em->getRepository('App\Entity\Sim')->findOneBy(array('iccid' =>$iccid_imei[$i]));
+                    //SimBill
+                    if ($Bill == null) {
+                        $Bill = new SimBill();
+                        $Bill->setdocNumber($docs_number[$i]);
+                        $Bill->setbillDate($dateObj);
+                        $Bill->setPaymentTerm($payment_term);
+                        $Bill->setQuantity(1);
+                        $Bill->setDiscount($discount);
+                        $em->persist($Bill);
+                        $em->flush();
+                    }
 
-                    $Bill = new DeviceBill();
-                    $Bill->setDocNumber($docs_number[$i]);
-                    $Bill->setbillDate($dateObj);
-                    $Bill->setPaymentTerm($payment_term);
-                    $Bill->setQuantity(1);
-                    $Bill->setDiscount($discount);
-                    $em->persist($Bill);
-                    $em->flush();
+
+                    //SIM
+                    if (!$sim){
+                        $sim = new Sim();
+                        $sim->setIccid($iccid_imei[$i]);
+                        $sim->setMatKey($mat_keys[$i]);
+                        $sim->setDescription($descripcions[$i]);
+                        $sim->setPrice($prices[$i]);
+                        $sim->setEntryDate($dateObj);
+                        $sim->setExitDate(null);
+                        $sim->setSimBill($Bill);
+                        $sim->setNote(NULL);
+                        $Bill->addSim($sim);
+                        $Bill->setQuantity($Bill->getQuantity() + 1);
+                        $warehouse->addSim($sim);
+                        $em->persist($sim);
+                        $em->flush();
+                    }
+                   
                 }
 
-                $Device = new Device();
-                $Device->setImei($iccid_imei[$i]);
-                $Device->setMatKey($mat_keys[$i]);
-                $Device->setDescription($descripcions[$i]);
-                $Device->setPrice($prices[$i]);
-                $Device->setEntryDate($dateObj);
-                $Device->setExitDate(null);
-                $Device->setWarehouse(null);
-                $Device->setDeviceBill($Bill);
-                $Device->setNote(NULL);
-                $Bill->addDevice($Device);
-                $Bill->setQuantity($Bill->getQuantity() + 1);
-                $em->persist($Device);
-                $em->flush();
-
-
-
-                //Device
-            } else if ($lenght == 19) {
-                // es iccid ->SIM
-                $Bill = $em->getRepository('App\Entity\SimBill')->findOneBy(array('docNumber' => $docs_number[$i]));
-                //SimBill
-                if ($Bill == null) {
-                    $Bill = new SimBill();
-                    $Bill->setdocNumber($docs_number[$i]);
-                    $Bill->setbillDate($dateObj);
-                    $Bill->setPaymentTerm($payment_term);
-                    $Bill->setQuantity(1);
-                    $Bill->setDiscount($discount);
-                    $em->persist($Bill);
-                    $em->flush();
-                }
-
-
-                //SIM
-                $sim = new Sim();
-                $sim->setIccid($iccid_imei[$i]);
-                $sim->setMatKey($mat_keys[$i]);
-                $sim->setDescription($descripcions[$i]);
-                $sim->setPrice($prices[$i]);
-                $sim->setEntryDate($dateObj);
-                $sim->setExitDate(null);
-                $sim->setWarehouse(null);
-                $sim->setSimBill($Bill);
-                $sim->setNote(NULL);
-                $Bill->addSim($sim);
-                $Bill->setQuantity($Bill->getQuantity() + 1);
-                $em->persist($sim);
-                $em->flush();
+                //----------updating warehouse-----------------
+                $warehouse ->setQuantity($warehouse->getQuantity() + 1);
+                $warehouse ->setCost($warehouse->getCost() + $prices[$i]);
             }
+            else{
+                $message[$i] = "No se reconoció una fecha válida. Revisar registro.";
+            }
+            $em->flush();
         }
     }
     
