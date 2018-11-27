@@ -87,15 +87,25 @@ class NoteController extends Controller
             $pdf = $PDFParser->parseFile($file);
             $text = $pdf->getText();
             $text = preg_replace('/\s{2,}|\t{1,}|\n/',' ',$text);
-            $message[] = $this->generateNote($text);
+            //var_dump($text);
+
+             //-------------------------checking if it's a note -------------------------------
+            preg_match('/(?<=Tipo de Comprobante: ).* egreso/', $text, $matches);
+            $matches = $matches[0];
+            $docCheck = $this->extraer($matches,'egreso');
+
+            if($docCheck == 'E') $message[$noteNames[$i]] = $this->generateNote($text);
+            else $message[$noteNames[$i]] = "Este PDF no pertenece a una nota de crédito.";
         }
         //var_dump($message);
+        //die;
         return $message;
     }
 
     public function generateNote($text){
         $em = $this->getDoctrine()->getManager();
         $message = [];
+        $device = $sim = null;
         //var_dump($text);
         
         //-------------------------doc Number -------------------------------
@@ -107,49 +117,9 @@ class NoteController extends Controller
 
         //-------------------------checking for existing note-------------------
         $note = $em->getRepository('App\Entity\Note')->findOneBy(array('docNumber' => $doc_number));
-        if($note) var_dump($note->getId());
+        //if($note) var_dump($note->getId());
         if($note == null){
-            //-------------------------date-------------------------------
-            preg_match('/(?<=FECHA Y HORA DE EXPEDICIÓN ).* SERIE - FOLIO/', $text, $matches);
-            $matches = $matches[0];
-            $noteDate = $this->extraer($matches,'SERIE');
-            //$data['phone'] = $phoneNumber;
-            $noteDate = new \DateTime($noteDate);
-            //var_dump($noteDate);
-            
-
-            //-------------------------payment term-------------------------------
-            preg_match('/(?<=CONDICIONES DE PAGO ).* FOLIO FISCAL/', $text, $matches);
-            $matches = $matches[0];
-            $payment = $this->extraer($matches,'FOLIO');
-            //var_dump($payment);
-            
-            //-------------------------quantity-------------------------------
-            preg_match('/(?<=Total de Pzas Factura: ).* SELLO DIGITAL DEL EMISOR:/', $text, $matches);
-            $matches = $matches[0];
-            $quantity = $this->extraer($matches,'SELLO');
-            //var_dump($quantity);
-
-            //-------------------------discount-------------------------------
-            preg_match('/(?<=PZA ).* CDV7/', $text, $matches);
-            $matches = $matches[0];
-            $discount = $this->extraer($matches,'CDV7');
-            $discount = explode(' ',$discount);
-            $price = $discount[0];
-            $discount = $discount[1];
-            //var_dump($discount);
-            //var_dump($price);
-
-            //-----------------------------generating note----------------------
-            $note = new Note();
-            $note -> setDocNumber($doc_number);
-            $note -> setNoteDate($noteDate);
-            $note -> setPaymentTerm($payment);
-            $note -> setQuantity($quantity);
-            $note -> setDiscount($discount);
-
-            $em->persist($note);
-
+            $origText = $text;
             //-------------------------IMEI/ICCID-------------------------------
             $imei = $iccid = null;
             preg_match('/(?<=CDV7 ).* CLAVE PROD O SERV/', $text, $matches);
@@ -158,32 +128,70 @@ class NoteController extends Controller
             $matches = $matches[0];
             if(strlen($matches)== 15){
                 $imei = $matches;
-                try{
-                    $device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' => $imei));
-                    $note -> addDevice($device);
-                    $activation = $em->getRepository('App\Entity\Activation')->findOneBy(array('device' => $device->getId()));
-                    $activation->setNote($note);
-                    $message[$imei] = $note;
-                }
-                catch(\Exception $ex){
-                    $message[$imei] = $ex->getMessage();
-                }       
-            } 
-            
-            else{
+                $device = $em->getRepository('App\Entity\Device')->findOneBy(array('imei' => $imei));     
+                $activation = $em->getRepository('App\Entity\Activation')->findOneBy(array('device' => $device->getId()));
+            }else{
                 $iccid = $matches;
-                try{
-                    $sim = $em->getRepository('App\Entity\Sim')->findOneBy(array('iccid' => $iccid));
-                    $note ->addSim($sim);
-                    $message[$iccid] = $note;
-                }
-                catch(\Exception $ex){
-                    $message[$iccid] = $ex->getMessage();
-                }
-                
+                $sim = $em->getRepository('App\Entity\Sim')->findOneBy(array('iccid' => $iccid));
+                $activation = $em->getRepository('App\Entity\Activation')->findOneBy(array('sim' => $sim->getId()));
             }
 
-            $em->flush();
+            if(($device || $sim) && $activation){
+                $text = $origText;
+                //-------------------------date-------------------------------
+                preg_match('/(?<=FECHA Y HORA DE EXPEDICIÓN ).* SERIE - FOLIO/', $text, $matches);
+                $matches = $matches[0];
+                $noteDate = $this->extraer($matches,'SERIE');
+                //$data['phone'] = $phoneNumber;
+                $noteDate = new \DateTime($noteDate);
+                //var_dump($noteDate);
+                
+                //-------------------------payment term-------------------------------
+                preg_match('/(?<=CONDICIONES DE PAGO ).* FOLIO FISCAL/', $text, $matches);
+                $matches = $matches[0];
+                $payment = $this->extraer($matches,'FOLIO');
+                //var_dump($payment);
+                
+                //-------------------------quantity-------------------------------
+                preg_match('/(?<=Total de Pzas Factura: ).* SELLO DIGITAL DEL EMISOR:/', $text, $matches);
+                $matches = $matches[0];
+                $quantity = $this->extraer($matches,'SELLO');
+                //var_dump($quantity);
+
+                //-------------------------discount-------------------------------
+                preg_match('/(?<=PZA ).* CDV7/', $text, $matches);
+                $matches = $matches[0];
+                $discount = $this->extraer($matches,'CDV7');
+                $discount = explode(' ',$discount);
+                $price = $discount[0];
+                $discount = $discount[1];
+                //var_dump($discount);
+                //var_dump($price);
+
+                //-----------------------------generating note----------------------
+                $note = new Note();
+                $note -> setDocNumber($doc_number);
+                $note -> setNoteDate($noteDate);
+                $note -> setPaymentTerm($payment);
+                $note -> setQuantity($quantity);
+                $note -> setDiscount($discount);
+
+                $em->persist($note);
+
+                if($device){
+                    $note ->addDevice($device);
+                    $activation->setNote($note);
+                    $message[$imei] = $note;
+                }else{
+                    $note ->addSim($sim);
+                    $activation->setNote($note);
+                    $message[$iccid] = $note;
+                }
+                $em->flush();
+            }else{
+                $message[$doc_number] = "El dispositivo/sim de esta nota no está registrado.";
+            }
+
         }else{
             $message[$doc_number] = "Esta nota ya fue registrada.";
         }

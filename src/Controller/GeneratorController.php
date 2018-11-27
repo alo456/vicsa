@@ -86,7 +86,9 @@ class GeneratorController extends Controller {
     }
 
 
-    public function generateExcel($contracts){
+    public function generateExcel(){
+        $em = $this->getDoctrine()->getManager();
+        $contracts = ['F-74064258', 'F-74064257'];
         $i = 0; 
         //-------------------------------looking for excel info into each device's IMEI---------------
         foreach($contracts as $contractNumber){
@@ -127,6 +129,7 @@ class GeneratorController extends Controller {
             //------------------GENERATE EXCEL-------------------------------
             $arrayData[$i++] = [NULL, NULL, "MX07", NULL, $imei, $matNum, $description, NULL, NULL, NULL, NULL, $line, "VICSA", NULL, NULL, $psi, $rfc, $name, NULL, $street, $inNum, $extNum,$colony, $township, $pc, $city, $state, $email, "M47", $deadlines, NULL, $punit, NULL, NULL, NULL, NULL, "PUE", "01", "P01"];
         }
+        
         $spreadsheet = new Spreadsheet();
         
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
@@ -136,6 +139,17 @@ class GeneratorController extends Controller {
             NULL, 
             'A2'
         );
+
+        for($j=0;$j<$i;$j++){
+            $idx = $j+2;
+            $sheet->setCellValueExplicit(
+                'E'.$idx,
+                $arrayData[$j][4],
+                \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+            );
+        }
+
+
         $sheet->setTitle("REVISION");
 
         $sheet->setCellValue('A1', 'No.');
@@ -211,14 +225,14 @@ class GeneratorController extends Controller {
         
          // Create a Temporary file in the system
          $fileName = 'ACLARACIONES.xlsx';
-         $publicDirectory = $this->get('kernel')->getProjectDir() . '/public';
+         $publicDirectory = $this->get('kernel')->getProjectDir() . '/public/Reports';
          $excelFilepath =  $publicDirectory . '/aclaraciones.xlsx';
          
          // Create the excel file in the tmp directory of the system
          $writer->save($excelFilepath);
          
          // Return the excel file as an attachment
-         return new Response("Excel generated succesfully");
+         return $this->file($excelFilepath, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
 
     }
 
