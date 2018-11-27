@@ -13,77 +13,6 @@
 {% block body %}
     {% embed 'menu.html.twig' %}
         {% block content %}
-            <div id="pending" class="ui-widget-content">
-                <h3 class="ui-widget-header">Notas Pendientes</h3>
-                <button  style=" float: right" type="button" class="btn btn-link" id="generate"><i class="fas fa-file-invoice"></i>&nbspGenerar Excel</button> 
-                
-                </br>
-                <table id="dtBasicExample" class="table"  cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="th-sm">Línea</th>
-                            <th class="th-sm">Descripción</th>
-                            <th class="th-sm">Precio</th>
-                            <th class="contract th-sm">Días</th>
-                            <th class="th-sm">Plan</th>
-                            <th class="account th-sm">Cuenta</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for key, pend in pends %}
-                            <tr>
-                                <td> <font color="#fff"> {{key}} </font></td>
-                                <td> <font color="#fff"> {{pend.description}} </font></td>
-                                <td> <font color="#fff"> {{pend.price}} </font></td>
-                                <td> <font color="#fff"> {{pend.days}} </font></td>
-                                <td> <font color="#fff"> {{pend.plan}} </font></td> 
-                                <td> <font color="#fff"> {{pend.account}} </font></td>   
-                            </tr>   
-                        {% endfor %}
-                        <tr>
-                            <td> <font color="#fff">9512234568 </font> </td>
-                            <td> <font color="#fff"> HUAWEI LTE </font></td>
-                            <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">5</font></td>
-                            <td> <font color="#fff">Plan </font></td>
-                            <td> <font color="#fff">Activacion </font></td>
-                        </tr>
-                        <tr>
-                            <td> <font color="#fff">9512234568 </font> </td>
-                            <td> <font color="#fff"> HUAWEI LTE </font></td>
-                            <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">10</font></td>
-                            <td> <font color="#fff">Plan </font></td>
-                            <td> <font color="#fff">Activacion </font></td>
-                        </tr>
-                        <tr>
-                            <td> <font color="#fff">9512234568 </font> </td>
-                            <td> <font color="#fff"> HUAWEI LTE </font></td>
-                            <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">15</font></td>
-                            <td> <font color="#fff">Plan </font></td>
-                            <td> <font color="#fff">Activacion </font></td>
-                        </tr>
-                        <tr>
-                            <td> <font color="#fff">9512234568 </font> </td>
-                            <td> <font color="#fff"> HUAWEI LTE </font></td>
-                            <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">20</font></td>
-                            <td> <font color="#fff">Plan </font></td>
-                            <td> <font color="#fff">Activacion </font></td>
-                        </tr>
-                        <tr>
-                            <td> <font color="#fff">9512234568 </font> </td>
-                            <td> <font color="#fff"> HUAWEI LTE </font></td>
-                            <td> <font color="#fff">$5,400 </font></td>
-                            <td> <font color="#fff">25</font></td>
-                            <td> <font color="#fff">Plan </font></td>
-                            <td> <font color="#fff">Activacion </font></td>
-                        </tr>
-                    </tbody>
-
-
-
             <div id="pending" class="card mb-2">
                 <div class="card-header" > Notas Por Pagar</div>
                 <div class="card-body">
@@ -93,19 +22,20 @@
                                 <th class="th-sm">Línea</th>
                                 <th class="th-sm">Descripción</th>
                                 <th class="th-sm">Precio</th>
-                                <th class="contract th-sm">Contrato</th>
-                                <th class="th-sm">Nombre del Plan</th>
+                                <th class="contract th-sm">Días</th>
+                                <th class="th-sm">Plan</th>
                                 <th class="account th-sm">Cuenta</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for key, pend in pends %}
                                 <tr>
-                                    <td> {{key}} </td>
-                                    <td> {{pend[0]}} </td>
-                                    <td> {{pend[1]}} </td>
-                                    <td> {{pend[2]}} </td>
-                                    <td> {{pend[3]}} </td>  
+                                    <td> {{key}} <span class="badge badge-warning">Pendiente</span></td>
+                                    <td> {{pend.description}} </font></td>
+                                    <td> {{pend.price}} </font></td>
+                                    <td> {{pend.days}} </font></td>
+                                    <td> {{pend.plan}} </font></td> 
+                                    <td> {{pend.account}} </font></td>
                                 </tr>   
                             {% endfor %}
                             <tr>
