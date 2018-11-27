@@ -60,10 +60,8 @@
             <div class="container-fluid">
                 <div>&nbsp&nbsp&nbsp&nbsp&nbsp</div>
                 <h4>{% block title %}{% endblock %}</h4>
-                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-align-justify"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse"> </div>
+                <div class="" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         {% block nav %} {% endblock %}
                         <!--<li class="nav-item text-left">
@@ -74,17 +72,35 @@
             </div>
         </nav>
         <div class="container clearfix">
+            <div id="success" class="alert alert-success" role="alert" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading">¡Cambios Realizados!</h4>
+                <p>Se han guardado exitosamente los cambios</p>
+                <hr>
+            </div>
+            <div id="error" class="alert alert-danger" role="alert" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading">¡Oh oh!</h4>
+                <p>Ha ocurrido un error inesperado. Intente de nuevo más tarde.</p>
+                <hr>
+                <p class="mb-0">Si el problema persiste contacte con el administrador.</p>
+            </div>
             {% block content %}{% endblock %}
         </div>
     </div>
 </div>
-        
+
 
 <script type="text/javascript">
-    if(Cookies.get('menu') == 1 ){
+    if (Cookies.get('menu') == 1) {
         $('#sidebar , #content').addClass('active');
-         Cookies.set('menu', 1);
-    }else Cookies.set('menu', 0)
+        Cookies.set('menu', 1);
+    } else
+        Cookies.set('menu', 0)
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

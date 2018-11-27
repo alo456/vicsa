@@ -22,10 +22,7 @@ a:focus {
     text-decoration: none;
     transition: all 0.3s;
 }
-a:hover {
-    color : #fff !important;
-    background-color: #064AA2 !important;
-}
+
 
 .navbar {
     padding: 15px 10px;
@@ -76,7 +73,10 @@ span {
     color: #476FA2;
     transition: all 0.3s;
 }
-
+#sidebar a:hover {
+    color : #fff !important;
+    background-color: #064AA2 !important;
+}
 .sidebar-header h3{
     color: #fff !important;
 }
@@ -205,7 +205,13 @@ a.article:hover {
     background: #062C5F !important;
     color: #fff !important;
 }
-
+select {
+    padding: 0.375rem 3.75rem 0.375rem 0.75rem !important;
+}
+table.dataTable tbody td {
+    word-break: break-word;
+    vertical-align: top;
+}
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -237,7 +243,23 @@ a.article:hover {
     .hide {
         display: none;
     }
-
+    .pagination{
+        justify-content: center !important;
+    }
+    
+    
+    li.paginate_button.previous {
+        display: inline;
+    }
+ 
+    li.paginate_button.next {
+        display: inline;
+    }
+ 
+    li.paginate_button {
+        display: none;
+    }
+    
     #sidebar ul li a {
         text-align: center;
     }
