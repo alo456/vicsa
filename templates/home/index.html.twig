@@ -12,19 +12,20 @@
                                 <th class="th-sm">Línea</th>
                                 <th class="th-sm">Descripción</th>
                                 <th class="th-sm">Precio</th>
-                                <th class="contract th-sm">Contrato</th>
-                                <th class="th-sm">Nombre del Plan</th>
+                                <th class="contract th-sm">Días</th>
+                                <th class="th-sm">Plan</th>
                                 <th class="account th-sm">Cuenta</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for key, pend in pends %}
                                 <tr>
-                                    <td> {{key}} </td>
-                                    <td> {{pend[0]}} </td>
-                                    <td> {{pend[1]}} </td>
-                                    <td> {{pend[2]}} </td>
-                                    <td> {{pend[3]}} </td>  
+                                    <td> {{key}} <span class="badge badge-warning">Pendiente</span></td>
+                                    <td> {{pend.description}} </font></td>
+                                    <td> {{pend.price}} </font></td>
+                                    <td> {{pend.days}} </font></td>
+                                    <td> {{pend.plan}} </font></td> 
+                                    <td> {{pend.account}} </font></td>
                                 </tr>   
                             {% endfor %}
                             <tr>
