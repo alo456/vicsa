@@ -68,7 +68,7 @@
                                 "<'row'<'col-sm-12 col-md-12'p>>",
                         buttons: [
                             {
-                                text: '<i class="fas fa-file-invoice-dollar"></i> <span class="badge badge-light">4</span>',
+                                text: '<i class="fas fa-file-invoice-dollar"></i> <span id="rows" class="badge badge-light"></span>',
                                 className: 'btn btn-info disabled'
                             }
                         ],
@@ -85,7 +85,7 @@
             $('#dtBasicExample_filter').removeClass('dataTables_filter');
             $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
-
+            $('#rows').append(table.rows().count());
         });
     </script>
 

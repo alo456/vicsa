@@ -3,67 +3,68 @@
 {% block body %}
     {% embed 'menu.html.twig' %}
         {% block title %} Inventario {% endblock %}
-            {% block content %}
-                <div class="card">
-                    <div class="card-body">
+        {% block content %}
+            <div class="card">
+                <div class="card-body">
 
-                        <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                            <thead>
+                    <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="th-sm">Nombre</th>
+                                <th class="th-sm">Cantidad</th>
+                                <th class="th-sm">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for desc, name in description  %}
                                 <tr>
-                                    <th class="th-sm">Nombre</th>
-                                    <th class="th-sm">Cantidad</th>
-                                    <th class="th-sm">Importe</th>
+                                    <td>{{ desc }}</td>
+                                    <td>{{ name.quantity }}
+                                    <td> {{ name.price }}
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for desc, name in description  %}
-                                    <tr>
-                                        <td>{{ desc }}</td>
-                                        <td>{{ name.quantity }}
-                                        <td> {{ name.price }}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>    
-                        </table>
-                    </div>
+                            {% endfor %}
+                        </tbody>    
+                    </table>
                 </div>
-            {% endblock %}
-        {% endembed %}
-    {% endblock %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
-    {% block javascripts %}
-        <script>
-            $(document).ready(function () {
-                $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn';
-                var table = $('#dtBasicExample')
-                        .DataTable({
-                            dom: "<'row no-gutters'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-7'f><'col-sm-12 col-md-3 text-right'B>>" +
-                                    "<'row'<'col-sm-12'tr>>" +
-                                    "<'row'<'col-sm-12 col-md-12'p>>",
-                            buttons: [
-                                {
-                                    text: '<i class="fas fa-mobile-alt"></i> <span class="badge badge-light">4</span>',
-                                    className: 'btn btn-info disabled'
-                                },
-                                {
-                                    text: '<i class="fas fa-dollar-sign"></i> <span class="badge badge-light">{{ totalwh }}</span>',
-                                    className: 'btn btn-success disabled'
-                                }
-                            ],
-                            "lengthMenu": [[10, 25, 50, -1], [10 + " Registros", 25 + " Registos", 50 + " Registos", "Todos"]],
-                            responsive: true
-                        });
-                new $.fn.dataTable.FixedHeader(table);
-                table.buttons().container()
-                        .appendTo('#dtBasicExample_wrapper .col-md-6:eq(0)');
-                $('.dt-buttons').removeClass('btn-group');
-                $($('.dt-buttons').children()).each(function () {
-                    $(this).addClass("mb-2");
-                });
-                $('#dtBasicExample_filter').removeClass('dataTables_filter');
-                $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
-                $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
-
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn';
+            var table = $('#dtBasicExample')
+                    .DataTable({
+                        dom: "<'row no-gutters'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-7'f><'col-sm-12 col-md-3 text-right'B>>" +
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-12'p>>",
+                        buttons: [
+                            {
+                                text: '<i class="fas fa-mobile-alt"></i> <span id="rows" class="badge badge-light"></span>',
+                                className: 'btn btn-info disabled'
+                            },
+                            {
+                                text: '<i class="fas fa-dollar-sign"></i> <span id="money" class="badge badge-light"></span>',
+                                className: 'btn btn-success disabled'
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, -1], [10 + " Registros", 25 + " Registos", 50 + " Registos", "Todos"]],
+                        responsive: true
+                    });
+            new $.fn.dataTable.FixedHeader(table);
+            table.buttons().container()
+                    .appendTo('#dtBasicExample_wrapper .col-md-6:eq(0)');
+            $('.dt-buttons').removeClass('btn-group');
+            $($('.dt-buttons').children()).each(function () {
+                $(this).addClass("mb-2");
             });
-        </script>
-    {% endblock %}
+            $('#dtBasicExample_filter').removeClass('dataTables_filter');
+            $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
+            $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
+            $('#rows').append(table.rows().count());
+            $('#money').append(table.column(2).data().sum().toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+        });
+    </script>
+{% endblock %}
