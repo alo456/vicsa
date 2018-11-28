@@ -87,7 +87,21 @@
             $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
             $('#rows').append(table.rows().count());
-
+            {% if message %}
+                var msg = {{message | json_encode | raw }};
+                console.log(msg);
+                if(typeof msg['send'] !== 'undefined'){
+                    if(Object.keys(msg).length > 1){
+                        delete msg['send'];
+                        for(var key in msg){
+                            $("#message").append(msg[key] + "</br>");
+                        }
+                        $("#error").modal('show');
+                    }else{
+                        $("#success").modal('show');
+                    } 
+                }
+            {% endif %}
         });
     </script>
 
