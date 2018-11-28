@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 class PurchaseController extends Controller
 {
     
-    private $contractName = '';
     public function index(Request $request)
     {
        
         $em = $this->getDoctrine()->getManager();
+        $message = [];
         $device = $em->getRepository('App\Entity\Device')->findAll();
         $sim = $em->getRepository('App\Entity\Sim')->findAll();
         $purchase = array_merge($device,$sim);
@@ -34,7 +34,8 @@ class PurchaseController extends Controller
             $file->move(
                 $directory, $file->getClientOriginalName()
             );
-            $this->extractExcel($file->getClientOriginalName());
+            $message = $this->extractExcel($file->getClientOriginalName());
+            $message['send'] = "ok";
 
         }
         return $this->render('purchase/index.html.twig',[ 
@@ -140,6 +141,7 @@ class PurchaseController extends Controller
                         $em->flush();
                     }
                     
+
                     //SIM
                 } else if ($lenght == 19) {
                     // es iccid ->SIM
@@ -175,7 +177,6 @@ class PurchaseController extends Controller
                         $em->persist($sim);
                         $em->flush();
                     }
-                   
                 }
 
                 //----------updating warehouse-----------------

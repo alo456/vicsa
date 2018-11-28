@@ -44,7 +44,8 @@ class ActivationController extends Controller
                 );
                 $activationNames[] = $file->getClientOriginalName();
             }
-            $message = $this->extractActivation($activationNames);           
+            $message = $this->extractActivation($activationNames);     
+            $message['send'] = "ok";      
             //var_dump($activationNames);
         }
         $files = scandir($directory);

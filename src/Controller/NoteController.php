@@ -43,6 +43,7 @@ class NoteController extends Controller
                 $noteNames[] = $file->getClientOriginalName();
             }           
             $message = $this->extractNote($noteNames);
+            $message['send'] = "ok";
         }
 
         $files = scandir($directory);
@@ -181,11 +182,11 @@ class NoteController extends Controller
                 if($device){
                     $note ->addDevice($device);
                     $activation->setNote($note);
-                    $message[$imei] = $note;
+                    //$message[$imei] = $note;
                 }else{
                     $note ->addSim($sim);
                     $activation->setNote($note);
-                    $message[$iccid] = $note;
+                    //$message[$iccid] = $note;
                 }
                 $em->flush();
             }else{
