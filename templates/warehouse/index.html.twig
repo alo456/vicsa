@@ -63,7 +63,7 @@
             $('#dtBasicExample_filter').removeClass('dataTables_filter');
             $('#dtBasicExample_filter').children().addClass('input-group col-md-6');
             $('#dtBasicExample_filter').children().append("<span class='input-group-append'><button class='btn btn-outline-secondary border-left-0 border' type='button'><i class='fa fa-search'></i></button></span>");
-            $('#rows').append(table.rows().count());
+            $('#rows').append(table.column(1).data().sum().toFixed().replace(/\d(?=(\d{3})+\.)/g, '$&,'));
             $('#money').append(table.column(2).data().sum().toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
         });
     </script>
