@@ -73,7 +73,8 @@ class NoteController extends Controller
 
         return $this->render('note/index.html.twig',[
             'formFiles' => $formFiles->createView(),
-            'savedFiles' => $savedFiles
+            'savedFiles' => $savedFiles,
+            'message' => $message
         ]);
     }
 

@@ -36,12 +36,12 @@ class PurchaseController extends Controller
             );
             $message = $this->extractExcel($file->getClientOriginalName());
             $message['send'] = "ok";
-
         }
 
         return $this->render('purchase/index.html.twig',[ 
                 'formFiles' => $formFiles->createView(),
-                'purchase' => $purchase
+                'purchase' => $purchase,
+                'message' => $message
                 ]);
     }
     
@@ -79,7 +79,7 @@ class PurchaseController extends Controller
         $descripcions = array();
         $prices = array();
         $mat_keys = array();
-        $warehouse = $em->getRepository('App\Entity\Warehouse')->findOneBy(array('id' => 6));
+        $warehouse = $em->getRepository('App\Entity\Warehouse')->findOneBy(array('id' => 1));
 
         for ($row = 2; $row <= $highestRow; ++$row) {
 
@@ -185,7 +185,7 @@ class PurchaseController extends Controller
                 $warehouse ->setCost($warehouse->getCost() + $prices[$i]);
             }
             else{
-                $message[$i] = "No se reconoció una fecha válida. Revisar registro.";
+                $message[$i] = "No se reconoció una fecha válida. Revisar registro: ".($i+1);
             }
             $em->flush();
         }

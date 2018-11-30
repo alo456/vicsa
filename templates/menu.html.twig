@@ -72,6 +72,50 @@
             </div>
         </nav>
         <div class="container clearfix">
+        <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border: 1px solid #28a745;">
+                    <div class="modal-header bg-success">
+                        <h5 class="modal-title text-white">
+                            ¡Cambios Realizados!
+                            <i class="fas fa-check"></i>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="text-white" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: #333030eb !important;">Se han guardado los cambios exitosamente.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border: 1px solid #dc3545;">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-white" id="exampleModalLabel">
+                            ¡Oh no!
+                            <i class="fas fa-times"></i>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: #333030eb !important;">Ha ocurrido un error.</p>
+                        <p id="message" style="color: #333030eb !important;"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
             <div id="success" class="alert alert-success" role="alert" style="display:none">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -90,6 +134,7 @@
                 <hr>
                 <p class="mb-0">Si el problema persiste contacte con el administrador.</p>
             </div>
+            -->
             {% block content %}{% endblock %}
         </div>
     </div>
@@ -110,5 +155,11 @@
             $('#sidebar').hasClass('active') ? Cookies.set('menu', 1) : Cookies.set('menu', 0);
         });
         $("#{{ app.request.attributes.get('_route') }}").addClass('active');
+        $('#success').on('hidden.bs.modal', function (e) {
+            location.replace("{{path(app.request.attributes.get('_route'))}}");
+        });
+        $('#error').on('hidden.bs.modal', function (e) {
+            location.replace("{{path(app.request.attributes.get('_route'))}}");
+        });
     });
 </script>

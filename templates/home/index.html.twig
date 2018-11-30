@@ -48,30 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="susccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content alert alert-success">
-                        <div class="modal-body">
-                            Se ha generado
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            Error
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -212,7 +189,6 @@
                     },
                     error: function (result) {
                         $("#error").show();
-                         window.location = 'generate';
                     }
                     });
                 }
