@@ -121,7 +121,6 @@ class HomeController extends AbstractController
             $purchases[$day] += $purchase[0]['price'];
         }
 
-        //var_dump($purchases);
 
         //if($total==0)echo "Nada";
         return $this->render('home/index.html.twig',[

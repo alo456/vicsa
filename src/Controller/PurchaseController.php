@@ -38,6 +38,7 @@ class PurchaseController extends Controller
             $message['send'] = "ok";
 
         }
+
         return $this->render('purchase/index.html.twig',[ 
                 'formFiles' => $formFiles->createView(),
                 'purchase' => $purchase
@@ -188,6 +189,7 @@ class PurchaseController extends Controller
             }
             $em->flush();
         }
+        return $message;
     }
     
     
