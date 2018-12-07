@@ -92,7 +92,9 @@ class GeneratorController extends Controller {
             $fileName = 'aclaraciones.xlsx';
             $publicDirectory = $this->get('kernel')->getProjectDir() . '/public/Reports';
             $excelFilepath = $publicDirectory . '/' . $fileName;
+           
             return $this->file($excelFilepath, $fileName , ResponseHeaderBag::DISPOSITION_INLINE);
+            
         }
         $em = $this->getDoctrine()->getManager();
         //$contracts = ['F-74064258', 'F-74064257'];

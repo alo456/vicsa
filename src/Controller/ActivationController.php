@@ -221,7 +221,7 @@ class ActivationController extends Controller
     
                     $client -> addContract($contract);
                     $em->flush();
-                    $message[$client->getRfc()] = "OK";
+                   
                 }
                 else{
                     $message[$client->getRfc()] = "No existe dicho dispositivo/sim en almacén.";
